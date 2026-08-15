@@ -85,7 +85,7 @@ export function CardTexto({
       )}
     >
       {numero && (
-        <p className="text-etiqueta text-madeira-mel uppercase">{numero}</p>
+        <p className="text-etiqueta text-nogueira-suave uppercase">{numero}</p>
       )}
       <h3 className="text-display-sm mt-2 font-display text-nogueira">
         {titulo}

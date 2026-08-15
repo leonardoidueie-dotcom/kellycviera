@@ -13,8 +13,6 @@ export type Cor = {
   classe: string;
   hex: string;
   uso: string;
-  /** Texto legível por cima dessa cor, na hora de desenhar o swatch. */
-  textoSobre: string;
 };
 
 export const coresBase: Cor[] = [
@@ -23,73 +21,75 @@ export const coresBase: Cor[] = [
     classe: "bg-fundo-cal",
     hex: "#F7F4EF",
     uso: "Base do site. Off-white quente, nunca branco puro.",
-    textoSobre: "text-grafite",
   },
   {
     token: "madeira-mel",
     classe: "bg-madeira-mel",
     hex: "#C8853F",
     uso: "Cor das peças. Destaque principal: botões, links, detalhes.",
-    textoSobre: "text-fundo-cal",
   },
   {
     token: "nogueira",
     classe: "bg-nogueira",
     hex: "#6B4226",
     uso: "Títulos e texto forte.",
-    textoSobre: "text-fundo-cal",
   },
   {
     token: "folha",
     classe: "bg-folha",
     hex: "#2F4A3C",
     uso: "Verde profundo do jardim vertical. Com parcimônia — um bloco por página.",
-    textoSobre: "text-fundo-cal",
   },
   {
     token: "grafite",
     classe: "bg-grafite",
     hex: "#1C1A17",
     uso: "Rodapé e texto de corpo escuro.",
-    textoSobre: "text-fundo-cal",
   },
   {
     token: "areia",
     classe: "bg-areia",
     hex: "#E4DBCD",
     uso: "Bordas, divisórias e superfícies secundárias.",
-    textoSobre: "text-grafite",
   },
 ];
 
 export const coresApoio: Cor[] = [
   {
+    token: "madeira-mel-claro",
+    classe: "bg-madeira-mel-claro",
+    hex: "#D9A05B",
+    uso: "Hover do botão sólido — a madeira pegando luz.",
+  },
+  {
     token: "madeira-mel-escuro",
     classe: "bg-madeira-mel-escuro",
     hex: "#AD6F31",
-    uso: "Hover do botão sólido.",
-    textoSobre: "text-fundo-cal",
+    uso: "Mel sobre fundo claro: aba ativa e link de destaque.",
   },
   {
     token: "nogueira-suave",
     classe: "bg-nogueira-suave",
-    hex: "#8C6144",
-    uso: "Texto secundário sobre o fundo cal.",
-    textoSobre: "text-fundo-cal",
+    hex: "#82593D",
+    uso: "Texto secundário e etiqueta sobre cal e areia-clara (AA 5.56 / 5.01).",
   },
   {
     token: "areia-clara",
     classe: "bg-areia-clara",
     hex: "#EFE8DD",
     uso: "Preenchimento sutil de card sobre o fundo cal.",
-    textoSobre: "text-grafite",
   },
   {
     token: "linha-forte",
     classe: "bg-linha-forte",
     hex: "#D3C6B2",
-    uso: "Borda de campo de formulário e divisória que precisa aparecer.",
-    textoSobre: "text-grafite",
+    uso: "Divisória que precisa aparecer um pouco mais.",
+  },
+  {
+    token: "linha-controle",
+    classe: "bg-linha-controle",
+    hex: "#9E8560",
+    uso: "Borda de botão de contorno e campo — 3:1 contra o fundo cal.",
   },
 ];
 

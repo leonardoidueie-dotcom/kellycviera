@@ -11,10 +11,11 @@ const base =
 
 const variantes: Record<Variante, string> = {
   // Chamada principal do site: falar com a marcenaria.
-  solido: "bg-madeira-mel text-fundo-cal hover:bg-madeira-mel-escuro",
-  // Ação secundária. Borda em areia, sem peso visual.
+  // Texto em grafite, não em cal: cal sobre mel dá 2.78 e reprova em AA.
+  solido: "bg-madeira-mel text-grafite hover:bg-madeira-mel-claro",
+  // Ação secundária. Borda discreta, mas com 3:1 contra o fundo.
   contorno:
-    "border border-linha-forte text-nogueira bg-transparent hover:bg-areia-clara",
+    "border border-linha-controle text-nogueira bg-transparent hover:bg-areia-clara",
   // Verde profundo — um por página, no bloco do jardim vertical.
   folha: "bg-folha text-fundo-cal hover:bg-grafite",
   // Link com regra que cresce no hover.

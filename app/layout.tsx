@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Fraunces, Inter } from "next/font/google";
 import "./globals.css";
+import { BotaoWhatsAppFlutuante } from "@/components/layout/BotaoWhatsAppFlutuante";
+import { Footer } from "@/components/layout/Footer";
+import { Header } from "@/components/layout/Header";
 import { site } from "@/lib/site";
 
 const fraunces = Fraunces({
@@ -34,7 +37,15 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="pt-BR" className={`${fraunces.variable} ${inter.variable}`}>
-      <body>{children}</body>
+      <body className="flex min-h-dvh flex-col">
+        <Header />
+        {/* pt-18/22 compensa a altura do header fixo. */}
+        <main id="conteudo" className="flex-1 pt-18 md:pt-22">
+          {children}
+        </main>
+        <Footer />
+        <BotaoWhatsAppFlutuante />
+      </body>
     </html>
   );
 }

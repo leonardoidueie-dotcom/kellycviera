@@ -34,7 +34,7 @@ function Secao({
   return (
     <section className="border-t border-linha py-16 md:py-20">
       <header className="mb-10 max-w-[52ch]">
-        <p className="text-etiqueta text-madeira-mel uppercase">{numero}</p>
+        <p className="text-etiqueta text-nogueira-suave uppercase">{numero}</p>
         <h2 className="text-display-md mt-2 font-display text-nogueira">
           {titulo}
         </h2>
@@ -49,9 +49,13 @@ function Swatch({ cor }: { cor: Cor }) {
   return (
     <div>
       <div
-        className={`${cor.classe} ${cor.textoSobre} rounded-peca border border-linha p-5 flex h-32 items-end`}
+        className={`${cor.classe} flex h-32 items-end rounded-peca border border-linha p-4`}
       >
-        <span className="text-corpo-sm font-mono">{cor.hex}</span>
+        {/* O hex vai numa pastilha sólida: por cima da cor crua, tom nenhum
+            garantiria AA em todos os swatches. */}
+        <span className="text-corpo-sm rounded-mini bg-fundo-cal px-2 py-0.5 font-mono text-grafite">
+          {cor.hex}
+        </span>
       </div>
       <p className="text-titulo mt-3 font-display text-nogueira">{cor.token}</p>
       <p className="text-corpo-sm mt-1 text-grafite/70">{cor.uso}</p>
@@ -67,7 +71,7 @@ export default function StyleguidePage() {
     <main className="mx-auto w-full max-w-6xl px-6 pb-24 md:px-10">
       {/* Cabeçalho -------------------------------------------------------- */}
       <header className="py-16 md:py-24">
-        <p className="text-etiqueta text-madeira-mel uppercase">
+        <p className="text-etiqueta text-nogueira-suave uppercase">
           {site.nome} {site.assinatura} · Design system
         </p>
         <h1 className="text-display-xl mt-4 max-w-[16ch] font-display text-nogueira">
@@ -122,7 +126,7 @@ export default function StyleguidePage() {
         </h3>
         <div className="mt-6 grid gap-4 md:grid-cols-3">
           <div className="rounded-peca border border-linha bg-fundo-cal p-6">
-            <p className="text-etiqueta text-madeira-mel uppercase">Padrão</p>
+            <p className="text-etiqueta text-nogueira-suave uppercase">Padrão</p>
             <p className="text-display-sm mt-2 font-display text-nogueira">
               Nogueira sobre cal
             </p>
@@ -141,7 +145,7 @@ export default function StyleguidePage() {
             </p>
           </div>
           <div className="rounded-peca bg-folha p-6">
-            <p className="text-etiqueta text-fundo-cal/60 uppercase">
+            <p className="text-etiqueta text-fundo-cal/70 uppercase">
               Jardim vertical
             </p>
             <p className="text-display-sm mt-2 font-display text-fundo-cal">
@@ -162,7 +166,7 @@ export default function StyleguidePage() {
       >
         <div className="grid gap-4 md:grid-cols-2">
           <div className="rounded-peca border border-linha p-6">
-            <p className="text-etiqueta text-madeira-mel uppercase">Display</p>
+            <p className="text-etiqueta text-nogueira-suave uppercase">Display</p>
             <p className="mt-3 font-display text-display-md text-nogueira">
               Fraunces
             </p>
@@ -175,7 +179,7 @@ export default function StyleguidePage() {
             </p>
           </div>
           <div className="rounded-peca border border-linha p-6">
-            <p className="text-etiqueta text-madeira-mel uppercase">Corpo</p>
+            <p className="text-etiqueta text-nogueira-suave uppercase">Corpo</p>
             <p className="mt-3 text-display-md text-nogueira">Inter</p>
             <p className="text-corpo-sm mt-2 text-grafite/70">
               Texto corrido, ficha técnica, botão e menu.{" "}
@@ -197,10 +201,10 @@ export default function StyleguidePage() {
                 <code className="text-corpo-sm rounded-mini bg-areia-clara px-2 py-0.5 text-nogueira">
                   {tipo.classe}
                 </code>
-                <p className="text-corpo-sm mt-2 text-grafite/60">
+                <p className="text-corpo-sm mt-2 text-grafite/70">
                   {tipo.medidas}
                 </p>
-                <p className="text-corpo-sm mt-1 text-grafite/60">{tipo.uso}</p>
+                <p className="text-corpo-sm mt-1 text-grafite/70">{tipo.uso}</p>
               </div>
               <p
                 className={`${tipo.classe} ${
@@ -224,7 +228,7 @@ export default function StyleguidePage() {
       >
         <div className="grid gap-4 md:grid-cols-2">
           <div className="rounded-peca border border-linha p-8">
-            <p className="text-etiqueta text-madeira-mel uppercase">
+            <p className="text-etiqueta text-nogueira-suave uppercase">
               Sólido · ação principal
             </p>
             <div className="mt-5 flex flex-wrap items-center gap-3">
@@ -235,7 +239,7 @@ export default function StyleguidePage() {
           </div>
 
           <div className="rounded-peca border border-linha p-8">
-            <p className="text-etiqueta text-madeira-mel uppercase">
+            <p className="text-etiqueta text-nogueira-suave uppercase">
               Contorno · ação secundária
             </p>
             <div className="mt-5 flex flex-wrap items-center gap-3">
@@ -247,7 +251,7 @@ export default function StyleguidePage() {
           </div>
 
           <div className="rounded-peca bg-folha p-8">
-            <p className="text-etiqueta text-fundo-cal/60 uppercase">
+            <p className="text-etiqueta text-fundo-cal/70 uppercase">
               Folha · só no jardim vertical
             </p>
             <div className="mt-5 flex flex-wrap items-center gap-3">
@@ -258,7 +262,7 @@ export default function StyleguidePage() {
           </div>
 
           <div className="rounded-peca border border-linha p-8">
-            <p className="text-etiqueta text-madeira-mel uppercase">
+            <p className="text-etiqueta text-nogueira-suave uppercase">
               Texto · navegação dentro do conteúdo
             </p>
             <div className="mt-5 flex flex-wrap items-center gap-6">
@@ -288,7 +292,7 @@ export default function StyleguidePage() {
             </Reveal>
           ))}
         </div>
-        <p className="text-corpo-sm mt-6 text-grafite/60">
+        <p className="text-corpo-sm mt-6 text-grafite/70">
           As imagens acima são texturas de espera. Entram as fotos reais das
           peças em <code>/public/images</code>.
         </p>
@@ -372,7 +376,7 @@ export default function StyleguidePage() {
       >
         <div className="grid gap-4 md:grid-cols-2">
           <div className="rounded-peca border border-linha p-8">
-            <p className="text-etiqueta text-madeira-mel uppercase">
+            <p className="text-etiqueta text-nogueira-suave uppercase">
               Entrada no scroll
             </p>
             <div className="mt-5 space-y-3">
@@ -384,13 +388,13 @@ export default function StyleguidePage() {
                 </Reveal>
               ))}
             </div>
-            <p className="text-corpo-sm mt-4 text-grafite/60">
+            <p className="text-corpo-sm mt-4 text-grafite/70">
               Componente <code>Reveal</code>, com atraso escalonado por item.
             </p>
           </div>
 
           <div className="rounded-peca border border-linha p-8">
-            <p className="text-etiqueta text-madeira-mel uppercase">
+            <p className="text-etiqueta text-nogueira-suave uppercase">
               Zoom na textura
             </p>
             <div className="moldura-peca relative mt-5 aspect-3/2 w-full">
@@ -402,7 +406,7 @@ export default function StyleguidePage() {
                 className="zoom-madeira object-cover"
               />
             </div>
-            <p className="text-corpo-sm mt-4 text-grafite/60">
+            <p className="text-corpo-sm mt-4 text-grafite/70">
               <code>moldura-peca</code> corta, <code>zoom-madeira</code> amplia.
               1,4s no <code>ease-madeira</code>.
             </p>
@@ -416,7 +420,7 @@ export default function StyleguidePage() {
               className="grid gap-2 py-4 md:grid-cols-[16rem_9rem_1fr] md:gap-8"
             >
               <code className="text-corpo-sm text-nogueira">{token.token}</code>
-              <span className="text-corpo-sm text-grafite/60">
+              <span className="text-corpo-sm text-grafite/70">
                 {token.valor}
               </span>
               <span className="text-corpo-sm text-grafite/75">{token.uso}</span>

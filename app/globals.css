@@ -17,8 +17,9 @@
   --color-areia: #e4dbcd; /* bordas, divisórias, superfícies secundárias */
 
   /* --- Tons de apoio (derivados, para estados de interface) -------------- */
-  --color-madeira-mel-escuro: #ad6f31; /* hover de botão sólido */
-  --color-nogueira-suave: #8c6144; /* texto secundário sobre cal */
+  --color-madeira-mel-claro: #d9a05b; /* hover do botão sólido */
+  --color-madeira-mel-escuro: #ad6f31; /* mel sobre fundo escuro */
+  --color-nogueira-suave: #82593d; /* etiqueta e texto secundário sobre cal e areia-clara */
   --color-areia-clara: #efe8dd; /* preenchimento sutil sobre cal */
 
   /* --- Papéis semânticos ------------------------------------------------ */
@@ -27,10 +28,16 @@
   --color-superficie-escura: var(--color-grafite);
   --color-linha: var(--color-areia);
   --color-linha-forte: #d3c6b2;
+  /* Borda de controle (botão de contorno, campo de formulário): precisa de
+     3:1 contra o fundo cal para cumprir o critério de contraste não-textual. */
+  --color-linha-controle: #9e8560;
   --color-texto: var(--color-grafite);
   --color-texto-suave: var(--color-nogueira-suave);
   --color-texto-titulo: var(--color-nogueira);
   --color-destaque: var(--color-madeira-mel);
+  /* Texto de destaque sobre o fundo cal. O madeira-mel puro só passa em AA
+     sobre fundo escuro — sobre cal, use este. */
+  --color-destaque-sobre-cal: var(--color-nogueira-suave);
 
   /* --- Tipografia ------------------------------------------------------- */
   --font-display: var(--fonte-display), "Fraunces", Georgia, serif;
@@ -102,6 +109,8 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     scroll-behavior: smooth;
+    /* O header é fixo: âncora nenhuma pode parar debaixo dele. */
+    scroll-padding-top: 6rem;
   }
 
   body {
@@ -125,9 +134,14 @@
     color: var(--color-fundo-cal);
   }
 
+  /* Anel de foco em duas cores. Cor única nenhuma alcança 3:1 contra todas as
+     superfícies do site — o mel some no botão mel, o nogueira some no verde
+     folha. Com o anel claro por dentro e o escuro por fora, um dos dois sempre
+     aparece, e o contraste entre eles (7.9:1) já identifica o foco. */
   :focus-visible {
-    outline: 2px solid var(--color-madeira-mel);
-    outline-offset: 3px;
+    outline: 2px solid var(--color-nogueira);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px var(--color-fundo-cal);
     border-radius: var(--radius-mini);
   }
 }
