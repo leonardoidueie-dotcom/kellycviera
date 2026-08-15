@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1250" width="1000" height="1250">
+  <defs>
+    <linearGradient id="ceu" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F7F4EF"/>
+      <stop offset="100%" stop-color="#EFE8DD"/>
+    </linearGradient>
+    <linearGradient id="mad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#E0B47F"/>
+      <stop offset="60%" stop-color="#C07E3C"/>
+      <stop offset="100%" stop-color="#815124"/>
+    </linearGradient>
+    <linearGradient id="madTopo" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#E0B47F"/>
+      <stop offset="50%" stop-color="#C07E3C"/>
+      <stop offset="100%" stop-color="#E0B47F"/>
+    </linearGradient>
+  </defs>
+  <rect width="1000" height="1250" fill="url(#ceu)"/>
+  <line x1="0" y1="880" x2="1000" y2="880" stroke="#E4DBCD" stroke-width="3"/>
+  <g stroke="#523419" stroke-width="4" stroke-linejoin="round">
+    <rect x="230" y="330" width="540" height="30" rx="4" fill="url(#mad)"/><rect x="230" y="376" width="540" height="30" rx="4" fill="url(#mad)"/><rect x="230" y="422" width="540" height="30" rx="4" fill="url(#mad)"/><rect x="230" y="468" width="540" height="30" rx="4" fill="url(#mad)"/><rect x="230" y="514" width="540" height="30" rx="4" fill="url(#mad)"/>
+    <rect x="200" y="560" width="600" height="46" rx="5" fill="url(#madTopo)"/>
+    <rect x="170" y="606" width="70" height="34" rx="4" fill="#815124"/>
+    <rect x="760" y="606" width="70" height="34" rx="4" fill="#815124"/>
+    <path d="M215 640 v210 M785 640 v210" fill="none" stroke-width="20" stroke-linecap="round"/>
+    <path d="M235 330 v240 M765 330 v240" fill="none" stroke-width="20" stroke-linecap="round"/>
+  </g>
+  <g stroke="#523419" stroke-width="2" opacity="0.3" fill="none">
+    <path d="M240 575 Q500 588 760 575"/><path d="M240 592 Q500 600 760 592"/>
+  </g></svg>

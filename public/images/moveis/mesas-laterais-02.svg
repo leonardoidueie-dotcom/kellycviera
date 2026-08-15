@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1250" width="1000" height="1250">
+  <defs>
+    <linearGradient id="base" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#DDAF77"/>
+      <stop offset="55%" stop-color="#BE7C3C"/>
+      <stop offset="100%" stop-color="#7E4E24"/>
+    </linearGradient>
+    <filter id="veio"><feTurbulence type="fractalNoise" baseFrequency="0.011 0.5" numOctaves="4" seed="23" result="r"/>
+      <feDisplacementMap in="SourceGraphic" in2="r" scale="30" xChannelSelector="R" yChannelSelector="G"/></filter>
+    <pattern id="ln" width="1000" height="20" patternUnits="userSpaceOnUse">
+      <rect y="0" width="1000" height="8" fill="#7E4E24" opacity="0.2"/>
+      <rect y="12" width="1000" height="2" fill="#DDAF77" opacity="0.3"/>
+    </pattern>
+  </defs>
+  <rect width="1000" height="1250" fill="url(#base)"/>
+  <g filter="url(#veio)"><rect x="-50" y="-50" width="1100" height="1350" fill="url(#ln)"/></g>
+  <rect width="1000" height="1250" fill="#7E4E24" opacity="0.05"/></svg>

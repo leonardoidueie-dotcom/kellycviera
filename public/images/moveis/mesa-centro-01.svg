@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1250" width="1000" height="1250">
+  <defs>
+    <linearGradient id="ceu" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F7F4EF"/>
+      <stop offset="100%" stop-color="#EFE8DD"/>
+    </linearGradient>
+    <linearGradient id="mad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#E4BC8B"/>
+      <stop offset="60%" stop-color="#C8853F"/>
+      <stop offset="100%" stop-color="#8A5729"/>
+    </linearGradient>
+    <linearGradient id="madTopo" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#E4BC8B"/>
+      <stop offset="50%" stop-color="#C8853F"/>
+      <stop offset="100%" stop-color="#E4BC8B"/>
+    </linearGradient>
+  </defs>
+  <rect width="1000" height="1250" fill="url(#ceu)"/>
+  <line x1="0" y1="880" x2="1000" y2="880" stroke="#E4DBCD" stroke-width="3"/>
+  <g stroke="#5A3A1E" stroke-width="4" stroke-linejoin="round">
+    <polygon points="180,600 700,600 820,540 300,540" fill="url(#madTopo)"/>
+    <polygon points="180,600 700,600 700,780 180,780" fill="url(#mad)"/>
+    <polygon points="700,600 820,540 820,720 700,780" fill="#8A5729"/>
+    <polygon points="250,780 640,780 640,850 250,850" fill="#8A5729" opacity="0.85"/>
+    <polygon points="640,780 740,730 740,800 640,850" fill="#5A3A1E" opacity="0.7"/>
+  </g>
+  <g stroke="#5A3A1E" stroke-width="2" opacity="0.35" fill="none">
+    <path d="M320 545 Q470 570 800 548"/><path d="M300 560 Q520 585 812 556"/>
+    <path d="M215 640 Q430 655 690 640"/><path d="M215 700 Q430 715 690 700"/>
+  </g></svg>

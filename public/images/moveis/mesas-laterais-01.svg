@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1250" width="1000" height="1250">
+  <defs>
+    <linearGradient id="ceu" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F7F4EF"/>
+      <stop offset="100%" stop-color="#EFE8DD"/>
+    </linearGradient>
+    <linearGradient id="mad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#DDAF77"/>
+      <stop offset="60%" stop-color="#BE7C3C"/>
+      <stop offset="100%" stop-color="#7E4E24"/>
+    </linearGradient>
+    <linearGradient id="madTopo" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#DDAF77"/>
+      <stop offset="50%" stop-color="#BE7C3C"/>
+      <stop offset="100%" stop-color="#DDAF77"/>
+    </linearGradient>
+  </defs>
+  <rect width="1000" height="1250" fill="url(#ceu)"/>
+  <line x1="0" y1="880" x2="1000" y2="880" stroke="#E4DBCD" stroke-width="3"/>
+  <g stroke="#4E3119" stroke-width="4" stroke-linejoin="round">
+    <ellipse cx="620" cy="470" rx="230" ry="72" fill="url(#madTopo)"/>
+    <path d="M390 470 v26 a230 72 0 0 0 460 0 v-26" fill="#7E4E24"/>
+    <path d="M430 520 v330 M810 520 v330 M430 850 h380" fill="none" stroke-width="16" stroke-linecap="round"/>
+    <ellipse cx="380" cy="640" rx="200" ry="64" fill="url(#madTopo)"/>
+    <path d="M180 640 v24 a200 64 0 0 0 400 0 v-24" fill="#7E4E24"/>
+    <path d="M215 686 v164 M545 686 v164 M215 850 h330" fill="none" stroke-width="16" stroke-linecap="round"/>
+  </g>
+  <g stroke="#4E3119" stroke-width="2" opacity="0.3" fill="none">
+    <ellipse cx="620" cy="470" rx="170" ry="50"/><ellipse cx="620" cy="470" rx="105" ry="30"/>
+    <ellipse cx="380" cy="640" rx="145" ry="44"/><ellipse cx="380" cy="640" rx="88" ry="26"/>
+  </g></svg>

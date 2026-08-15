@@ -25,3 +25,13 @@ export const site = {
 export function linkWhatsApp(mensagem: string = site.whatsapp.mensagemPadrao) {
   return `https://wa.me/${site.whatsapp.numero}?text=${encodeURIComponent(mensagem)}`;
 }
+
+/**
+ * Link de orçamento de uma peça específica. A Kelly já abre a conversa
+ * sabendo do que o cliente está falando.
+ */
+export function linkWhatsAppPeca(nomeDaPeca: string) {
+  return linkWhatsApp(
+    `Oi, Kelly! Vi a ${nomeDaPeca} no site e quero um orçamento.`,
+  );
+}
