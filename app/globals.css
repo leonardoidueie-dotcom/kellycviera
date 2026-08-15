@@ -1,0 +1,215 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   DESIGN SYSTEM — Kelly Brandão Marcenaria
+   Tokens. Nenhuma cor, tamanho ou tempo solto no restante do código.
+   Tailwind v4: este bloco @theme é a configuração do tema — gera as
+   variáveis CSS e as utilitárias (bg-madeira-mel, text-display-lg, etc.).
+   ========================================================================== */
+
+@theme {
+  /* --- Paleta base ------------------------------------------------------ */
+  --color-fundo-cal: #f7f4ef; /* off-white quente, base do site */
+  --color-madeira-mel: #c8853f; /* tom das peças, destaque principal */
+  --color-nogueira: #6b4226; /* texto forte, títulos */
+  --color-folha: #2f4a3c; /* verde profundo, uso parcimonioso */
+  --color-grafite: #1c1a17; /* rodapé, textos escuros */
+  --color-areia: #e4dbcd; /* bordas, divisórias, superfícies secundárias */
+
+  /* --- Tons de apoio (derivados, para estados de interface) -------------- */
+  --color-madeira-mel-escuro: #ad6f31; /* hover de botão sólido */
+  --color-nogueira-suave: #8c6144; /* texto secundário sobre cal */
+  --color-areia-clara: #efe8dd; /* preenchimento sutil sobre cal */
+
+  /* --- Papéis semânticos ------------------------------------------------ */
+  --color-superficie: var(--color-fundo-cal);
+  --color-superficie-2: var(--color-areia-clara);
+  --color-superficie-escura: var(--color-grafite);
+  --color-linha: var(--color-areia);
+  --color-linha-forte: #d3c6b2;
+  --color-texto: var(--color-grafite);
+  --color-texto-suave: var(--color-nogueira-suave);
+  --color-texto-titulo: var(--color-nogueira);
+  --color-destaque: var(--color-madeira-mel);
+
+  /* --- Tipografia ------------------------------------------------------- */
+  --font-display: var(--fonte-display), "Fraunces", Georgia, serif;
+  --font-sans: var(--fonte-corpo), "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  /* Escala explícita. Display fluido, corpo fixo.
+     Títulos com tracking levemente negativo. */
+  --text-display-xl: clamp(2.75rem, 6.2vw, 4.5rem);
+  --text-display-xl--line-height: 1.02;
+  --text-display-xl--letter-spacing: -0.03em;
+
+  --text-display-lg: clamp(2.25rem, 4.6vw, 3.25rem);
+  --text-display-lg--line-height: 1.06;
+  --text-display-lg--letter-spacing: -0.025em;
+
+  --text-display-md: clamp(1.75rem, 3.2vw, 2.375rem);
+  --text-display-md--line-height: 1.12;
+  --text-display-md--letter-spacing: -0.02em;
+
+  --text-display-sm: clamp(1.375rem, 2.2vw, 1.625rem);
+  --text-display-sm--line-height: 1.2;
+  --text-display-sm--letter-spacing: -0.018em;
+
+  --text-titulo: 1.125rem; /* nome de peça no card */
+  --text-titulo--line-height: 1.3;
+  --text-titulo--letter-spacing: -0.012em;
+
+  --text-corpo-lg: 1.125rem;
+  --text-corpo-lg--line-height: 1.65;
+  --text-corpo-lg--letter-spacing: -0.003em;
+
+  --text-corpo: 1rem;
+  --text-corpo--line-height: 1.7;
+
+  --text-corpo-sm: 0.875rem;
+  --text-corpo-sm--line-height: 1.6;
+
+  --text-etiqueta: 0.6875rem; /* kicker / caption em caixa alta */
+  --text-etiqueta--line-height: 1.4;
+  --text-etiqueta--letter-spacing: 0.16em;
+
+  /* --- Raio: pequeno e consistente -------------------------------------- */
+  --radius-mini: 4px;
+  --radius-peca: 5px; /* padrão de cards, fotos e campos */
+  --radius-bloco: 6px;
+
+  /* --- Sombra: quase nenhuma -------------------------------------------- */
+  --shadow-sutil: 0 1px 2px rgb(28 26 23 / 0.05);
+  --shadow-elevado: 0 8px 24px -12px rgb(28 26 23 / 0.14);
+
+  /* --- Movimento: discreto ---------------------------------------------- */
+  --ease-suave: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-madeira: cubic-bezier(0.33, 0.05, 0.2, 1); /* zoom lento da foto */
+
+  --duracao-toque: 200ms; /* hover de botão e link */
+  --duracao-entrada: 700ms; /* fade + subida no scroll */
+  --duracao-madeira: 1400ms; /* zoom na textura */
+
+  /* --- Medidas ----------------------------------------------------------- */
+  --largura-leitura: 68ch;
+}
+
+/* ==========================================================================
+   BASE
+   ========================================================================== */
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-superficie);
+    color: var(--color-texto);
+    font-family: var(--font-sans);
+    font-size: var(--text-corpo);
+    line-height: 1.7;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    color: var(--color-texto-titulo);
+    font-weight: 500;
+  }
+
+  ::selection {
+    background-color: var(--color-madeira-mel);
+    color: var(--color-fundo-cal);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-madeira-mel);
+    outline-offset: 3px;
+    border-radius: var(--radius-mini);
+  }
+}
+
+/* ==========================================================================
+   COMPONENTES DE MOVIMENTO
+   ========================================================================== */
+
+@layer components {
+  /* Entrada no scroll: fade + subida de 12px. */
+  .revelar {
+    opacity: 0;
+    transform: translateY(12px);
+    transition:
+      opacity var(--duracao-entrada) var(--ease-suave),
+      transform var(--duracao-entrada) var(--ease-suave);
+    transition-delay: var(--atraso, 0ms);
+  }
+
+  .revelar[data-visivel="true"] {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Assinatura da marca: a moldura corta, a foto amplia devagar e o veio
+     da madeira aparece. A textura é o argumento de venda. */
+  .moldura-peca {
+    overflow: hidden;
+    border-radius: var(--radius-peca);
+    background-color: var(--color-areia-clara);
+  }
+
+  .zoom-madeira {
+    transform: scale(1);
+    transition: transform var(--duracao-madeira) var(--ease-madeira);
+    will-change: transform;
+  }
+
+  .moldura-peca:hover .zoom-madeira,
+  .moldura-peca:focus-within .zoom-madeira,
+  .group:hover .zoom-madeira,
+  .group:focus-within .zoom-madeira {
+    transform: scale(1.06);
+  }
+
+  /* Linha fina em areia — separador padrão do site, no lugar de sombra. */
+  .linha-fina {
+    border: 0;
+    border-top: 1px solid var(--color-linha);
+  }
+}
+
+/* ==========================================================================
+   ACESSIBILIDADE — movimento reduzido
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .revelar {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .zoom-madeira,
+  .moldura-peca:hover .zoom-madeira,
+  .moldura-peca:focus-within .zoom-madeira,
+  .group:hover .zoom-madeira,
+  .group:focus-within .zoom-madeira {
+    transform: none;
+    transition: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
