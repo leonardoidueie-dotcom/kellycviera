@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { IconeWhatsApp } from "@/components/ui/IconeWhatsApp";
 import { abas } from "@/lib/navegacao";
-import { linkWhatsApp, site } from "@/lib/site";
+import { BotaoWhatsApp } from "@/components/ui/BotaoWhatsApp";
+import { site } from "@/lib/site";
+import { mensagens } from "@/lib/whatsapp";
 
 const atendimento = [
   { rotulo: "Segunda a sexta", valor: "8h às 18h" },
@@ -28,16 +30,14 @@ export function Footer() {
             </p>
           </div>
 
-          <a
-            href={linkWhatsApp()}
-            target="_blank"
-            rel="noopener noreferrer"
+          <BotaoWhatsApp
+            origem="rodape-chamada"
+            mensagem={mensagens.sobMedida}
             className="text-corpo inline-flex h-14 items-center justify-center gap-2 rounded-peca bg-madeira-mel px-8 font-medium text-grafite transition-colors duration-200 ease-suave hover:bg-madeira-mel-claro"
           >
             <IconeWhatsApp className="size-5" />
             Pedir orçamento
-            <span className="sr-only">no WhatsApp (abre em nova aba)</span>
-          </a>
+          </BotaoWhatsApp>
         </div>
       </section>
 
@@ -75,15 +75,13 @@ export function Footer() {
           <h2 className="text-etiqueta text-madeira-mel uppercase">Contato</h2>
           <ul className="mt-4 space-y-2.5">
             <li>
-              <a
-                href={linkWhatsApp()}
-                target="_blank"
-                rel="noopener noreferrer"
+              <BotaoWhatsApp
+                origem="rodape-contato"
                 className="text-corpo-sm inline-flex items-center gap-2 text-fundo-cal/75 underline decoration-fundo-cal/25 underline-offset-[6px] transition-colors duration-200 ease-suave hover:text-fundo-cal hover:decoration-madeira-mel"
               >
                 <IconeWhatsApp className="size-4" />
                 Orçamento no WhatsApp
-              </a>
+              </BotaoWhatsApp>
             </li>
             <li>
               <a

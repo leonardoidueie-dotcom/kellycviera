@@ -1,5 +1,6 @@
+import { BotaoWhatsApp } from "@/components/ui/BotaoWhatsApp";
 import { IconeWhatsApp } from "@/components/ui/IconeWhatsApp";
-import { linkWhatsApp } from "@/lib/site";
+import { mensagens } from "@/lib/whatsapp";
 
 /**
  * Fechamento da home. Em claro de propósito: o rodapé que vem logo abaixo é
@@ -21,16 +22,14 @@ export function ChamadaFinal() {
           começar. Você recebe o desenho da peça antes de fechar qualquer coisa.
         </p>
 
-        <a
-          href={linkWhatsApp()}
-          target="_blank"
-          rel="noopener noreferrer"
+        <BotaoWhatsApp
+          origem="home-chamada-final"
+          mensagem={mensagens.sobMedida}
           className="text-corpo mt-10 inline-flex h-14 items-center justify-center gap-2 rounded-peca bg-madeira-mel px-8 font-medium text-grafite transition-colors duration-200 ease-suave hover:bg-madeira-mel-claro"
         >
           <IconeWhatsApp className="size-5" />
           Pedir orçamento no WhatsApp
-          <span className="sr-only">(abre em nova aba)</span>
-        </a>
+        </BotaoWhatsApp>
       </div>
     </section>
   );

@@ -1,7 +1,8 @@
 import Image from "next/image";
-import { ButtonLink } from "@/components/ui/Button";
+import { BotaoWhatsApp } from "@/components/ui/BotaoWhatsApp";
+import { ButtonLink, classesBotao } from "@/components/ui/Button";
 import { IconeWhatsApp } from "@/components/ui/IconeWhatsApp";
-import { linkWhatsApp, site } from "@/lib/site";
+import { site } from "@/lib/site";
 
 /**
  * Abertura do site. A foto ocupa metade da tela no desktop e entra inteira no
@@ -30,10 +31,13 @@ export function Hero() {
             <ButtonLink href="/moveis" tamanho="lg">
               Ver os móveis
             </ButtonLink>
-            <ButtonLink href={linkWhatsApp()} variante="contorno" tamanho="lg">
+            <BotaoWhatsApp
+              origem="home-hero"
+              className={classesBotao("contorno", "lg")}
+            >
               <IconeWhatsApp className="size-5" />
               Falar no WhatsApp
-            </ButtonLink>
+            </BotaoWhatsApp>
           </div>
         </div>
 

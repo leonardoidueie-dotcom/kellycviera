@@ -1,6 +1,7 @@
 import Image from "next/image";
+import { BotaoWhatsApp } from "@/components/ui/BotaoWhatsApp";
 import { IconeWhatsApp } from "@/components/ui/IconeWhatsApp";
-import { linkWhatsApp } from "@/lib/site";
+import { mensagens } from "@/lib/whatsapp";
 
 /**
  * O único bloco em verde folha do site. É aqui que o token ganha o dia — em
@@ -33,18 +34,14 @@ export function JardimVertical() {
             mede o vão e monta no lugar.
           </p>
 
-          <a
-            href={linkWhatsApp(
-              "Oi, Kelly! Quero um orçamento de jardim vertical artificial.",
-            )}
-            target="_blank"
-            rel="noopener noreferrer"
+          <BotaoWhatsApp
+            origem="home-jardim-vertical"
+            mensagem={mensagens.jardimVertical}
             className="text-corpo mt-8 inline-flex h-14 w-fit items-center justify-center gap-2 rounded-peca bg-madeira-mel px-7 font-medium text-grafite transition-colors duration-200 ease-suave hover:bg-madeira-mel-claro"
           >
             <IconeWhatsApp className="size-5" />
             Orçar meu jardim vertical
-            <span className="sr-only">no WhatsApp (abre em nova aba)</span>
-          </a>
+          </BotaoWhatsApp>
         </div>
       </div>
     </section>

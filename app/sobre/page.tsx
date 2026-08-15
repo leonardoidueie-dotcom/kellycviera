@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { AberturaPagina } from "@/components/layout/AberturaPagina";
-import { ButtonLink } from "@/components/ui/Button";
+import { ButtonLink, classesBotao } from "@/components/ui/Button";
 import { IconeWhatsApp } from "@/components/ui/IconeWhatsApp";
 import { Reveal } from "@/components/ui/Reveal";
-import { linkWhatsApp, site } from "@/lib/site";
+import { BotaoWhatsApp } from "@/components/ui/BotaoWhatsApp";
+import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Sobre",
@@ -130,10 +131,13 @@ export default function SobrePage() {
             atende sabe o que está sendo feito lá dentro.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <ButtonLink href={linkWhatsApp()} tamanho="lg">
+            <BotaoWhatsApp
+              origem="sobre-chamada"
+              className={classesBotao("solido", "lg")}
+            >
               <IconeWhatsApp className="size-5" />
               Falar no WhatsApp
-            </ButtonLink>
+            </BotaoWhatsApp>
             <ButtonLink
               href={site.instagram.url}
               variante="contorno"

@@ -12,26 +12,8 @@ export const site = {
     usuario: "@kellycvieirabrandao",
     url: "https://instagram.com/kellycvieirabrandao",
   },
-  whatsapp: {
-    // TODO: trocar pelo número real da loja (formato 55DDDNÚMERO).
-    numero: "5531000000000",
-    mensagemPadrao:
-      "Oi, Kelly! Vi o site e quero um orçamento de um móvel sob medida.",
-  },
   regiao: "Minas Gerais",
 } as const;
 
-/** Monta o link de conversa já com a mensagem escrita. */
-export function linkWhatsApp(mensagem: string = site.whatsapp.mensagemPadrao) {
-  return `https://wa.me/${site.whatsapp.numero}?text=${encodeURIComponent(mensagem)}`;
-}
+// O WhatsApp mora em lib/whatsapp.ts — número, mensagens prontas e analytics.
 
-/**
- * Link de orçamento de uma peça específica. A Kelly já abre a conversa
- * sabendo do que o cliente está falando.
- */
-export function linkWhatsAppPeca(nomeDaPeca: string) {
-  return linkWhatsApp(
-    `Oi, Kelly! Vi a ${nomeDaPeca} no site e quero um orçamento.`,
-  );
-}

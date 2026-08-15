@@ -36,7 +36,16 @@ type Props = {
   children: React.ReactNode;
 };
 
-function classes(variante: Variante, tamanho: Tamanho, className?: string) {
+/**
+ * Monta as classes do botão. Exportada para quem precisa da aparência de
+ * botão sem ser um `<button>` nem um `<Link>` — caso do BotaoWhatsApp, que
+ * é uma âncora externa com rastreamento próprio.
+ */
+export function classesBotao(
+  variante: Variante = "solido",
+  tamanho: Tamanho = "md",
+  className?: string,
+) {
   return cn(
     base,
     variantes[variante],
@@ -44,6 +53,8 @@ function classes(variante: Variante, tamanho: Tamanho, className?: string) {
     className,
   );
 }
+
+const classes = classesBotao;
 
 export function Button({
   variante = "solido",

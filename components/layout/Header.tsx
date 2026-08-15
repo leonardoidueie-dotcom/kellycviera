@@ -6,7 +6,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Logotipo } from "@/components/layout/Logotipo";
 import { IconeWhatsApp } from "@/components/ui/IconeWhatsApp";
 import { abaAtiva, abas } from "@/lib/navegacao";
-import { linkWhatsApp, site } from "@/lib/site";
+import { BotaoWhatsApp } from "@/components/ui/BotaoWhatsApp";
+import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 const ID_DRAWER = "menu-mobile";
@@ -131,16 +132,13 @@ export function Header() {
             })}
 
             {/* Ação principal. Não é uma aba: sai do site para a conversa. */}
-            <a
-              href={linkWhatsApp()}
-              target="_blank"
-              rel="noopener noreferrer"
+            <BotaoWhatsApp
+              origem="header"
               className="text-corpo-sm ml-3 inline-flex h-11 items-center gap-2 rounded-peca bg-madeira-mel px-5 font-medium text-grafite transition-colors duration-200 ease-suave hover:bg-madeira-mel-claro"
             >
               <IconeWhatsApp className="size-4" />
               WhatsApp
-              <span className="sr-only">(abre em nova aba)</span>
-            </a>
+            </BotaoWhatsApp>
           </nav>
 
           {/* Abre o drawer — mobile e tablet */}
@@ -246,17 +244,14 @@ export function Header() {
 
         {/* Ação principal, fixa no pé do drawer. */}
         <div className="border-t border-linha px-5 pt-4 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
-          <a
-            href={linkWhatsApp()}
-            target="_blank"
-            rel="noopener noreferrer"
+          <BotaoWhatsApp
+            origem="drawer-mobile"
             onClick={fechar}
             className="text-corpo flex h-13 w-full items-center justify-center gap-2 rounded-peca bg-madeira-mel font-medium text-grafite transition-colors duration-200 ease-suave hover:bg-madeira-mel-claro"
           >
             <IconeWhatsApp className="size-5" />
             Pedir orçamento
-            <span className="sr-only">no WhatsApp (abre em nova aba)</span>
-          </a>
+          </BotaoWhatsApp>
           <p className="text-corpo-sm mt-3 text-center text-nogueira-suave">
             {site.regiao} · resposta no mesmo dia
           </p>

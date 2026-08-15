@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { Button, ButtonLink } from "@/components/ui/Button";
+import { Button, ButtonLink, classesBotao } from "@/components/ui/Button";
 import { CardPeca, CardTexto } from "@/components/ui/Card";
 import { Reveal } from "@/components/ui/Reveal";
 import {
@@ -12,7 +12,8 @@ import {
   sombras,
   type Cor,
 } from "@/lib/tokens";
-import { linkWhatsApp, site } from "@/lib/site";
+import { BotaoWhatsApp } from "@/components/ui/BotaoWhatsApp";
+import { site } from "@/lib/site";
 import { moveisPublicados } from "@/data/moveis";
 
 export const metadata: Metadata = {
@@ -83,9 +84,12 @@ export default function StyleguidePage() {
           ele não entra em componente nenhum.
         </p>
         <div className="mt-8 flex flex-wrap items-center gap-3">
-          <ButtonLink href={linkWhatsApp()} tamanho="lg">
+          <BotaoWhatsApp
+            origem="styleguide"
+            className={classesBotao("solido", "lg")}
+          >
             Pedir orçamento no WhatsApp
-          </ButtonLink>
+          </BotaoWhatsApp>
           <ButtonLink
             href={site.instagram.url}
             variante="contorno"

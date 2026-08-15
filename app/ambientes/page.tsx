@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { ButtonLink } from "@/components/ui/Button";
+import { ButtonLink, classesBotao } from "@/components/ui/Button";
 import { AberturaPagina } from "@/components/layout/AberturaPagina";
 import { IconeWhatsApp } from "@/components/ui/IconeWhatsApp";
 import { Reveal } from "@/components/ui/Reveal";
 import { ambientes, pecasDoAmbiente } from "@/data/ambientes";
-import { linkWhatsApp } from "@/lib/site";
+import { BotaoWhatsApp } from "@/components/ui/BotaoWhatsApp";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -104,10 +104,13 @@ export default function AmbientesPage() {
             peça no seu espaço antes de qualquer coisa ser cortada.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <ButtonLink href={linkWhatsApp()} tamanho="lg">
+            <BotaoWhatsApp
+              origem="ambientes-chamada"
+              className={classesBotao("solido", "lg")}
+            >
               <IconeWhatsApp className="size-5" />
               Falar no WhatsApp
-            </ButtonLink>
+            </BotaoWhatsApp>
             <ButtonLink href="/moveis" variante="contorno" tamanho="lg">
               Ver as peças
             </ButtonLink>

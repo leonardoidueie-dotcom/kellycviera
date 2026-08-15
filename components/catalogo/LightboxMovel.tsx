@@ -4,7 +4,8 @@ import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { IconeWhatsApp } from "@/components/ui/IconeWhatsApp";
 import type { Movel } from "@/data/moveis";
-import { linkWhatsAppPeca } from "@/lib/site";
+import { BotaoWhatsApp } from "@/components/ui/BotaoWhatsApp";
+import { mensagens } from "@/lib/whatsapp";
 import { cn } from "@/lib/utils";
 
 const ID_TITULO = "lightbox-titulo";
@@ -249,18 +250,15 @@ export function LightboxMovel({
               ))}
             </dl>
 
-            <a
-              href={linkWhatsAppPeca(movel.nome)}
-              target="_blank"
-              rel="noopener noreferrer"
+            <BotaoWhatsApp
+              origem="lightbox-peca"
+              peca={movel.nome}
+              mensagem={mensagens.peca(movel.nome)}
               className="text-corpo mt-7 flex h-14 w-full items-center justify-center gap-2 rounded-peca bg-madeira-mel px-6 text-center font-medium text-grafite transition-colors duration-200 ease-suave hover:bg-madeira-mel-claro"
             >
               <IconeWhatsApp className="size-5 shrink-0" />
               Pedir orçamento desta peça
-              <span className="sr-only">
-                no WhatsApp — {movel.nome} (abre em nova aba)
-              </span>
-            </a>
+            </BotaoWhatsApp>
             <p className="text-corpo-sm mt-3 text-nogueira-suave">
               A medida sai do seu espaço. Manda a foto que a gente ajusta.
             </p>
