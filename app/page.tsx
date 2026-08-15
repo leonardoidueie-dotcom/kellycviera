@@ -1,11 +1,19 @@
-import { AberturaPagina } from "@/components/layout/AberturaPagina";
+import { ChamadaFinal } from "@/components/home/ChamadaFinal";
+import { Destaques } from "@/components/home/Destaques";
+import { Hero } from "@/components/home/Hero";
+import { Instagram } from "@/components/home/Instagram";
+import { JardimVertical } from "@/components/home/JardimVertical";
+import { Provas } from "@/components/home/Provas";
 
 export default function Home() {
   return (
-    <AberturaPagina
-      etiqueta="Marcenaria autoral · Minas Gerais"
-      titulo="Mais que projetar ambiente. Nós fabricamos ideias."
-      texto="Madeira maciça e de demolição, na medida do seu espaço. O site está em construção — as seções entram em seguida."
-    />
+    <>
+      <Hero />
+      <Provas />
+      <Destaques />
+      <JardimVertical />
+      <Instagram />
+      <ChamadaFinal />
+    </>
   );
 }

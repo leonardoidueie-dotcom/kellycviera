@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000">
+  <defs>
+    <linearGradient id="parede" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FBF9F5"/><stop offset="100%" stop-color="#EFE8DD"/>
+    </linearGradient>
+    <linearGradient id="piso" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#E8E0D3"/><stop offset="100%" stop-color="#DCD1BE"/>
+    </linearGradient>
+    <linearGradient id="mad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#D6A96F"/><stop offset="60%" stop-color="#B0723A"/><stop offset="100%" stop-color="#75481F"/>
+    </linearGradient>
+    <linearGradient id="madTopo" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#D6A96F"/><stop offset="50%" stop-color="#B0723A"/><stop offset="100%" stop-color="#D6A96F"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#parede)"/>
+  <rect y="660" width="1600" height="340" fill="url(#piso)"/>
+  <line x1="0" y1="660" x2="1600" y2="660" stroke="#D3C6B2" stroke-width="4"/>
+  <rect y="642" width="1600" height="18" fill="#E4DBCD"/>
+  
+    <g stroke="#4A2E17" stroke-width="3" fill="none">
+        <line x1="560" y1="0" x2="560" y2="205"/>
+        <path d="M508 262 L526 205 L594 205 L612 262 Z" fill="#B0723A" opacity="0.9"/>
+      </g><g stroke="#4A2E17" stroke-width="3" fill="none">
+        <line x1="800" y1="0" x2="800" y2="205"/>
+        <path d="M748 262 L766 205 L834 205 L852 262 Z" fill="#B0723A" opacity="0.9"/>
+      </g><g stroke="#4A2E17" stroke-width="3" fill="none">
+        <line x1="1040" y1="0" x2="1040" y2="205"/>
+        <path d="M988 262 L1006 205 L1074 205 L1092 262 Z" fill="#B0723A" opacity="0.9"/>
+      </g>
+    <rect x="120" y="150" width="240" height="380" rx="4" fill="#EFE8DD" stroke="#D3C6B2" stroke-width="5"/>
+    <line x1="240" y1="150" x2="240" y2="530" stroke="#D3C6B2" stroke-width="4"/>
+    <g stroke="#4A2E17" stroke-width="4">
+        <rect x="430" y="470" width="118" height="26" rx="5" fill="#75481F"/>
+        <rect x="438" y="352" width="102" height="120" rx="8" fill="#B0723A" opacity="0.92"/>
+        <path d="M444 496 v150 M534 496 v150" fill="none" stroke-width="11" stroke-linecap="round"/>
+      </g><g stroke="#4A2E17" stroke-width="4">
+        <rect x="590" y="470" width="118" height="26" rx="5" fill="#75481F"/>
+        <rect x="598" y="352" width="102" height="120" rx="8" fill="#B0723A" opacity="0.92"/>
+        <path d="M604 496 v150 M694 496 v150" fill="none" stroke-width="11" stroke-linecap="round"/>
+      </g><g stroke="#4A2E17" stroke-width="4">
+        <rect x="1010" y="470" width="118" height="26" rx="5" fill="#75481F"/>
+        <rect x="1018" y="352" width="102" height="120" rx="8" fill="#B0723A" opacity="0.92"/>
+        <path d="M1024 496 v150 M1114 496 v150" fill="none" stroke-width="11" stroke-linecap="round"/>
+      </g><g stroke="#4A2E17" stroke-width="4">
+        <rect x="1170" y="470" width="118" height="26" rx="5" fill="#75481F"/>
+        <rect x="1178" y="352" width="102" height="120" rx="8" fill="#B0723A" opacity="0.92"/>
+        <path d="M1184 496 v150 M1274 496 v150" fill="none" stroke-width="11" stroke-linecap="round"/>
+      </g>
+    <g stroke="#4A2E17" stroke-width="5" stroke-linejoin="round">
+      <polygon points="380,470 1230,470 1330,404 480,404" fill="url(#madTopo)"/>
+      <polygon points="430,455 1280,455 1300,420 450,420" fill="none" stroke-width="4" opacity="0.5"/>
+      <polygon points="380,470 1230,470 1230,516 380,516" fill="url(#mad)"/>
+      <polygon points="1230,470 1330,404 1330,450 1230,516" fill="#75481F"/>
+      <path d="M620 516 v144 M900 516 v144 M620 660 h280" fill="none" stroke-width="30" stroke-linecap="square"/>
+    </g>
+    <g stroke="#4A2E17" stroke-width="2" opacity="0.3" fill="none">
+      <path d="M470 432 Q860 448 1310 418"/><path d="M430 448 Q860 462 1290 434"/>
+    </g>
+    <g fill="#2F4A3C" opacity="0.92">
+      <ellipse cx="1440" cy="600" rx="86" ry="72"/><ellipse cx="1400" cy="540" rx="60" ry="52"/>
+      <ellipse cx="1490" cy="548" rx="54" ry="46"/>
+      <rect x="1400" y="600" width="86" height="62" rx="6" fill="#D3C6B2"/>
+    </g></svg>

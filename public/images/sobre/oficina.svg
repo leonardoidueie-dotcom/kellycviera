@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000">
+  <defs>
+    <linearGradient id="parede" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FBF9F5"/><stop offset="100%" stop-color="#EFE8DD"/>
+    </linearGradient>
+    <linearGradient id="piso" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#E8E0D3"/><stop offset="100%" stop-color="#DCD1BE"/>
+    </linearGradient>
+    <linearGradient id="mad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#E4BC8B"/><stop offset="60%" stop-color="#C8853F"/><stop offset="100%" stop-color="#8A5729"/>
+    </linearGradient>
+    <linearGradient id="madTopo" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#E4BC8B"/><stop offset="50%" stop-color="#C8853F"/><stop offset="100%" stop-color="#E4BC8B"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#parede)"/>
+  <rect y="660" width="1600" height="340" fill="url(#piso)"/>
+  <line x1="0" y1="660" x2="1600" y2="660" stroke="#D3C6B2" stroke-width="4"/>
+  <rect y="642" width="1600" height="18" fill="#E4DBCD"/>
+  
+    <line x1="0" y1="150" x2="1600" y2="150" stroke="#D3C6B2" stroke-width="5"/>
+    
+    <g stroke="#5A3A1E" stroke-width="5" fill="none" stroke-linecap="round">
+      <path d="M180 190 h190 l-24 54 h-142 Z" fill="#C8853F" opacity="0.85"/>
+      <path d="M420 190 v70 M400 190 h40 M420 260 l26 34 M420 260 l-26 34"/>
+      <rect x="500" y="190" width="150" height="26" rx="4" fill="#C8853F" opacity="0.85"/>
+      <path d="M520 216 v40 M630 216 v40"/>
+      <path d="M720 186 l90 90 M720 276 l90 -90"/>
+    </g>
+    <rect x="1180" y="300" width="330" height="34" rx="4" fill="url(#mad)" stroke="#5A3A1E" stroke-width="3"/><rect x="1180" y="346" width="330" height="34" rx="4" fill="url(#mad)" stroke="#5A3A1E" stroke-width="3"/><rect x="1180" y="392" width="330" height="34" rx="4" fill="url(#mad)" stroke="#5A3A1E" stroke-width="3"/><rect x="1180" y="438" width="330" height="34" rx="4" fill="url(#mad)" stroke="#5A3A1E" stroke-width="3"/><rect x="1180" y="484" width="330" height="34" rx="4" fill="url(#mad)" stroke="#5A3A1E" stroke-width="3"/>
+    <g stroke="#5A3A1E" stroke-width="5" stroke-linejoin="round">
+      <polygon points="240,500 900,500 990,440 330,440" fill="url(#madTopo)"/>
+      <polygon points="240,500 900,500 900,548 240,548" fill="url(#mad)"/>
+      <polygon points="900,500 990,440 990,488 900,548" fill="#8A5729"/>
+      <path d="M300 548 v112 M830 548 v112" fill="none" stroke-width="26" stroke-linecap="square"/>
+      <path d="M300 610 h530" fill="none" stroke-width="14"/>
+    </g>
+    <g stroke="#5A3A1E" stroke-width="4" fill="#C8853F" opacity="0.9">
+      <rect x="390" y="404" width="150" height="36" rx="5"/>
+      <rect x="600" y="410" width="110" height="30" rx="5"/>
+    </g>
+    <ellipse cx="620" cy="690" rx="380" ry="34" fill="#D3C6B2" opacity="0.5"/></svg>
