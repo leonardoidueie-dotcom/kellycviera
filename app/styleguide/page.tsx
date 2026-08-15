@@ -13,7 +13,7 @@ import {
   type Cor,
 } from "@/lib/tokens";
 import { linkWhatsApp, site } from "@/lib/site";
-import { pecas } from "@/data/pecas";
+import { moveisPublicados } from "@/data/moveis";
 
 export const metadata: Metadata = {
   title: "Design system",
@@ -280,21 +280,21 @@ export default function StyleguidePage() {
         resumo="Passe o mouse na foto: a imagem amplia devagar, 1,4 segundo, e o veio da madeira aparece. Essa é a assinatura do site — a textura é o argumento de venda da marcenaria."
       >
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {pecas.map((peca, i) => (
+          {moveisPublicados.slice(0, 3).map((peca, i) => (
             <Reveal key={peca.slug} atraso={i * 90}>
               <CardPeca
                 nome={peca.nome}
                 categoria={peca.categoria}
-                ficha={peca.ficha}
-                imagem={peca.imagem}
-                alt={peca.alt}
+                ficha={peca.medidas}
+                imagem={peca.imagens[0].src}
+                alt={peca.imagens[0].alt}
               />
             </Reveal>
           ))}
         </div>
         <p className="text-corpo-sm mt-6 text-grafite/70">
-          As imagens acima são texturas de espera. Entram as fotos reais das
-          peças em <code>/public/images</code>.
+          Os cards saem do catálogo de verdade (<code>data/moveis.ts</code>).
+          As imagens são desenhos de espera até entrarem as fotos das peças.
         </p>
 
         <h3 className="text-display-sm mt-14 font-display text-nogueira">
@@ -399,7 +399,7 @@ export default function StyleguidePage() {
             </p>
             <div className="moldura-peca relative mt-5 aspect-3/2 w-full">
               <Image
-                src="/images/peca-mesa.svg"
+                src="/images/moveis/mesa-centro-02.svg"
                 alt="Textura de madeira ampliando devagar no hover"
                 fill
                 sizes="(max-width: 768px) 100vw, 50vw"
