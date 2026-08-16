@@ -62,6 +62,10 @@ const DEFAULT_DIR = new THREE.Vector3(2.45, 1.5, 2.7).normalize();
 /** raio da esfera que envolve a mesa inteira + margem de enquadramento */
 const FIT_RADIUS =
   Math.hypot(TOP_W / 2, TOP_D / 2, HEIGHT / 2) * 1.06;
+/** quanto a câmera recua quando a mesa está desmontada */
+const EXPLODED_FIT = 1.36;
+/** as peças sobem ao desmontar, então o centro da órbita sobe junto */
+const EXPLODED_LOOK_AT = 0.2;
 const MIN_FACTOR = 0.55;
 const MAX_FACTOR = 1.5;
 const FALLBACK_DIST = 3.8;
@@ -168,80 +172,230 @@ function Piece({
   );
 }
 
-function Mesa({ maps }: { maps: WoodMaps[] }) {
+/* -------------------------------------------------------------------------- */
+/*  Vista explodida — a mesa se desmonta para mostrar como é feita             */
+/* -------------------------------------------------------------------------- */
+
+const ZERO = new THREE.Vector3();
+
+/**
+ * Envolve uma peça num grupo que desliza suavemente até o deslocamento de
+ * "desmontagem" e volta ao lugar quando a mesa é remontada.
+ */
+function ExplodingPiece({
+  explode,
+  exploded,
+  instant,
+  children,
+}: {
+  explode: [number, number, number];
+  exploded: boolean;
+  instant: boolean;
+  children: ReactNode;
+}) {
+  const ref = useRef<THREE.Group>(null);
+  const target = useMemo(() => new THREE.Vector3(...explode), [explode]);
+
+  useFrame((_, delta) => {
+    const group = ref.current;
+    if (!group) return;
+    const goal = exploded ? target : ZERO;
+    if (instant) {
+      group.position.copy(goal);
+      return;
+    }
+    // suavização independente do frame rate
+    group.position.lerp(goal, 1 - Math.pow(0.004, Math.min(delta, 0.1)));
+  });
+
+  return <group ref={ref}>{children}</group>;
+}
+
+/** etiqueta que aparece junto da peça quando a mesa está desmontada */
+function PartLabel({
+  position,
+  titulo,
+  texto,
+  visible,
+}: {
+  position: [number, number, number];
+  titulo: string;
+  texto: string;
+  visible: boolean;
+}) {
+  if (!visible) return null;
+
+  return (
+    <Html position={position} center zIndexRange={[15, 0]}>
+      <div className="w-40 rounded-md border border-dourado/25 bg-grafite/90 px-2.5 py-2 text-left shadow-lg backdrop-blur">
+        <p className="font-display text-[12px] leading-tight text-dourado">
+          {titulo}
+        </p>
+        <p className="mt-1 text-[9px] leading-relaxed text-areia/70">{texto}</p>
+      </div>
+    </Html>
+  );
+}
+
+function Mesa({
+  maps,
+  exploded,
+  instant,
+}: {
+  maps: WoodMaps[];
+  exploded: boolean;
+  instant: boolean;
+}) {
   const [m0, m1, m2, m3] = maps;
 
   // leve variação de tom entre as pranchas (multiplicador sobre o mel base)
   const tints = ["#ffffff", "#f6efe6", "#fffaf2"];
+
+  // quanto cada grupo de peças se afasta na vista explodida
+  const LIFT = 0.42; // o tampo sobe
+  const SPREAD = 0.3; // as pranchas se separam
+  const OUT = 0.34; // o travamento sai para fora
 
   return (
     <group position={[0, GROUP_Y, 0]}>
       {/* ---------------- Tampo ---------------- */}
       {/* pranchas longitudinais, levemente rebaixadas para criar os frisos */}
       {PLANK_Z.map((z, i) => (
-        <Piece
+        <ExplodingPiece
           key={`prancha-${i}`}
-          size={[INNER_W, TOP_T - 0.004, PLANK_D]}
-          position={[0, TOP_Y - 0.002, z]}
-          maps={maps[i % maps.length]}
-          tint={tints[i]}
-          repeat={[2.2, 1]}
-        />
+          exploded={exploded}
+          instant={instant}
+          explode={[0, LIFT + i * 0.06, (i - 1) * SPREAD]}
+        >
+          <Piece
+            size={[INNER_W, TOP_T - 0.004, PLANK_D]}
+            position={[0, TOP_Y - 0.002, z]}
+            maps={maps[i % maps.length]}
+            tint={tints[i]}
+            repeat={[2.2, 1]}
+          />
+          {i === 2 && (
+            <PartLabel
+              visible={exploded}
+              position={[-INNER_W / 2 - 0.16, TOP_Y + 0.16, z]}
+              titulo="Pranchas do tampo"
+              texto="Três peças de madeira maciça de demolição, 8 cm de espessura, unidas com friso aparente."
+            />
+          )}
+        </ExplodingPiece>
       ))}
 
       {/* travamento perimetral: longarinas + cabeceiras */}
-      <Piece
-        size={[TOP_W, TOP_T, FRAME]}
-        position={[0, TOP_Y, -(TOP_D - FRAME) / 2]}
-        maps={m3}
-        repeat={[2.4, 1]}
-      />
-      <Piece
-        size={[TOP_W, TOP_T, FRAME]}
-        position={[0, TOP_Y, (TOP_D - FRAME) / 2]}
-        maps={m3}
-        tint="#faf3ea"
-        repeat={[2.4, 1]}
-      />
-      <Piece
-        size={[FRAME, TOP_T, INNER_D]}
-        position={[-(TOP_W - FRAME) / 2, TOP_Y, 0]}
-        maps={m0}
-        repeat={[1, 1]}
-      />
-      <Piece
-        size={[FRAME, TOP_T, INNER_D]}
-        position={[(TOP_W - FRAME) / 2, TOP_Y, 0]}
-        maps={m0}
-        tint="#fbf5ec"
-        repeat={[1, 1]}
-      />
+      <ExplodingPiece
+        exploded={exploded}
+        instant={instant}
+        explode={[0, LIFT * 0.55, -OUT]}
+      >
+        <Piece
+          size={[TOP_W, TOP_T, FRAME]}
+          position={[0, TOP_Y, -(TOP_D - FRAME) / 2]}
+          maps={m3}
+          repeat={[2.4, 1]}
+        />
+      </ExplodingPiece>
+      <ExplodingPiece
+        exploded={exploded}
+        instant={instant}
+        explode={[0, LIFT * 0.55, OUT]}
+      >
+        <Piece
+          size={[TOP_W, TOP_T, FRAME]}
+          position={[0, TOP_Y, (TOP_D - FRAME) / 2]}
+          maps={m3}
+          tint="#faf3ea"
+          repeat={[2.4, 1]}
+        />
+        <PartLabel
+          visible={exploded}
+          position={[TOP_W / 2 - 0.35, TOP_Y - 0.16, (TOP_D - FRAME) / 2 + 0.1]}
+          titulo="Travamento"
+          texto="Moldura perimetral que trava as pranchas e impede o tampo de empenar. Cantos chanfrados e selados com óleo fosco."
+        />
+      </ExplodingPiece>
+      <ExplodingPiece
+        exploded={exploded}
+        instant={instant}
+        explode={[-OUT * 1.5, LIFT * 0.55, 0]}
+      >
+        <Piece
+          size={[FRAME, TOP_T, INNER_D]}
+          position={[-(TOP_W - FRAME) / 2, TOP_Y, 0]}
+          maps={m0}
+          repeat={[1, 1]}
+        />
+      </ExplodingPiece>
+      <ExplodingPiece
+        exploded={exploded}
+        instant={instant}
+        explode={[OUT * 1.5, LIFT * 0.55, 0]}
+      >
+        <Piece
+          size={[FRAME, TOP_T, INNER_D]}
+          position={[(TOP_W - FRAME) / 2, TOP_Y, 0]}
+          maps={m0}
+          tint="#fbf5ec"
+          repeat={[1, 1]}
+        />
+      </ExplodingPiece>
 
       {/* ---------------- Pés em "U" invertido ---------------- */}
       {[-1, 1].map((sx) => (
         <group key={`pe-${sx}`} position={[sx * FOOT_X, 0, 0]}>
           {[-1, 1].map((sz) => (
-            <Piece
+            <ExplodingPiece
               key={`montante-${sz}`}
-              size={[PANEL_T, LEG_H, PANEL_W]}
-              position={[0, LEG_H / 2, sz * FOOT_Z]}
-              rotation={[-sz * LEAN, 0, 0]}
-              maps={m1}
-              tint={sz > 0 ? "#f7f0e7" : "#ffffff"}
-              repeat={[1, 1.4]}
-            />
+              exploded={exploded}
+              instant={instant}
+              explode={[sx * 0.12, 0, sz * 0.22]}
+            >
+              <Piece
+                size={[PANEL_T, LEG_H, PANEL_W]}
+                position={[0, LEG_H / 2, sz * FOOT_Z]}
+                rotation={[-sz * LEAN, 0, 0]}
+                maps={m1}
+                tint={sz > 0 ? "#f7f0e7" : "#ffffff"}
+                repeat={[1, 1.4]}
+              />
+              {sx > 0 && sz > 0 && (
+                <PartLabel
+                  visible={exploded}
+                  position={[0.3, LEG_H / 2, sz * FOOT_Z + 0.18]}
+                  titulo="Montantes do pé"
+                  texto="Painéis maciços de 12 cm, levemente inclinados para dentro — é o que dá o desenho em “U” invertido."
+                />
+              )}
+            </ExplodingPiece>
           ))}
           {/* travessa que fecha o "U" contra a face inferior do tampo */}
-          <Piece
-            size={[
-              PANEL_T + 0.01,
-              CROSS_T,
-              (FOOT_Z - Math.sin(LEAN) * LEG_H) * 2 + PANEL_W,
-            ]}
-            position={[0, LEG_H + CROSS_T / 2, 0]}
-            maps={m2}
-            repeat={[1, 1]}
-          />
+          <ExplodingPiece
+            exploded={exploded}
+            instant={instant}
+            explode={[0, 0.16, 0]}
+          >
+            <Piece
+              size={[
+                PANEL_T + 0.01,
+                CROSS_T,
+                (FOOT_Z - Math.sin(LEAN) * LEG_H) * 2 + PANEL_W,
+              ]}
+              position={[0, LEG_H + CROSS_T / 2, 0]}
+              maps={m2}
+              repeat={[1, 1]}
+            />
+            {sx < 0 && (
+              <PartLabel
+                visible={exploded}
+                position={[-0.34, LEG_H + CROSS_T / 2, 0]}
+                titulo="Travessa"
+                texto="Une os dois montantes por cavilha e cola estrutural — nenhuma ferragem aparece na peça pronta."
+              />
+            )}
+          </ExplodingPiece>
         </group>
       ))}
     </group>
@@ -372,7 +526,7 @@ function CameraBridge({
       },
       reset: () => {
         const controls = controlsRef.current;
-        controls?.target.set(0, 0, 0);
+        controls?.target.set(0, controls.target.y, 0);
         camera.position.copy(DEFAULT_DIR.clone().multiplyScalar(homeDist));
         controls?.update();
       },
@@ -392,12 +546,17 @@ function CameraBridge({
 function FitToViewport({
   controlsRef,
   onHomeDist,
+  exploded,
+  instant,
 }: {
   controlsRef: React.MutableRefObject<OrbitControlsImpl | null>;
   onHomeDist: (dist: number) => void;
+  exploded: boolean;
+  instant: boolean;
 }) {
   const camera = useThree((s) => s.camera) as THREE.PerspectiveCamera;
   const size = useThree((s) => s.size);
+  const goal = useRef<number | null>(null);
 
   useEffect(() => {
     const aspect = size.width / Math.max(size.height, 1);
@@ -405,20 +564,50 @@ function FitToViewport({
     const hFov = 2 * Math.atan(Math.tan(vFov / 2) * aspect);
 
     // enquadra a esfera envolvente pelo menor dos dois campos de visão,
-    // assim a mesa cabe em qualquer ângulo da órbita (e em tela estreita)
+    // assim a mesa cabe em qualquer ângulo da órbita (e em tela estreita).
+    // desmontada, a mesa ocupa mais espaço — a câmera recua junto.
     const halfFov = Math.min(vFov, hFov) / 2;
-    const dist = FIT_RADIUS / Math.sin(halfFov);
+    const radius = FIT_RADIUS * (exploded ? EXPLODED_FIT : 1);
+    const dist = radius / Math.sin(halfFov);
 
     onHomeDist(dist);
+    goal.current = dist;
+    camera.updateProjectionMatrix();
+  }, [camera, size.width, size.height, exploded, onHomeDist]);
 
+  // acompanha o alvo suavemente, para o recuo virar parte da animação
+  useFrame((_, delta) => {
     const controls = controlsRef.current;
-    const target = controls ? controls.target : new THREE.Vector3();
+    const smooth = 1 - Math.pow(0.004, Math.min(delta, 0.1));
+
+    // recentra a órbita na altura das peças
+    if (controls) {
+      const lookAtY = exploded ? EXPLODED_LOOK_AT : 0;
+      if (Math.abs(controls.target.y - lookAtY) > 0.001) {
+        controls.target.y = instant
+          ? lookAtY
+          : THREE.MathUtils.lerp(controls.target.y, lookAtY, smooth);
+        controls.update();
+      }
+    }
+
+    const dist = goal.current;
+    if (dist == null) return;
+
+    const target = controls ? controls.target : ZERO;
     const dir = camera.position.clone().sub(target);
     if (dir.lengthSq() < 1e-6) dir.copy(DEFAULT_DIR);
-    camera.position.copy(target.clone().add(dir.setLength(dist)));
-    camera.updateProjectionMatrix();
+
+    const current = dir.length();
+    if (Math.abs(current - dist) < 0.005) {
+      goal.current = null;
+      return;
+    }
+
+    const next = instant ? dist : THREE.MathUtils.lerp(current, dist, smooth);
+    camera.position.copy(target.clone().add(dir.setLength(next)));
     controls?.update();
-  }, [camera, size.width, size.height, controlsRef, onHomeDist]);
+  });
 
   return null;
 }
@@ -503,6 +692,7 @@ export default function MesaViewerScene({
   const [dragging, setDragging] = useState(false);
   const [active, setActive] = useState<string | null>(null);
   const [homeDist, setHomeDist] = useState(FALLBACK_DIST);
+  const [exploded, setExploded] = useState(false);
 
   const maps = useWoodMaps([11, 23, 37, 53]);
 
@@ -553,8 +743,9 @@ export default function MesaViewerScene({
         aria-label="Modelo 3D interativo da mesa de jantar rústica"
       >
         <Lights />
-        <Mesa maps={maps} />
-        <Hotspots active={active} onSelect={setActive} />
+        <Mesa maps={maps} exploded={exploded} instant={reducedMotion} />
+        {/* com a mesa desmontada quem explica são as etiquetas das peças */}
+        {!exploded && <Hotspots active={active} onSelect={setActive} />}
 
         <ContactShadows
           position={[0, GROUP_Y + 0.001, 0]}
@@ -588,7 +779,12 @@ export default function MesaViewerScene({
           onEnd={handleEnd}
         />
         <AutoRotate controlsRef={controlsRef} enabled={autoRotate} />
-        <FitToViewport controlsRef={controlsRef} onHomeDist={setHomeDist} />
+        <FitToViewport
+          controlsRef={controlsRef}
+          onHomeDist={setHomeDist}
+          exploded={exploded}
+          instant={reducedMotion}
+        />
         <CameraBridge
           apiRef={apiRef}
           controlsRef={controlsRef}
@@ -609,6 +805,17 @@ export default function MesaViewerScene({
             }}
           >
             {autoRotate ? "Pausar" : "Girar"}
+          </button>
+          <button
+            type="button"
+            className={`${btn} ${exploded ? "border-dourado/70 text-dourado" : ""}`}
+            aria-pressed={exploded}
+            onClick={() => {
+              setExploded((v) => !v);
+              setActive(null);
+            }}
+          >
+            {exploded ? "Montar" : "Desmontar"}
           </button>
           <button
             type="button"
@@ -640,7 +847,9 @@ export default function MesaViewerScene({
       </div>
 
       <p className="pointer-events-none absolute inset-x-0 top-4 text-center text-[10px] uppercase tracking-[0.3em] text-areia/35">
-        Arraste para girar · toque nos pontos para ver o acabamento
+        {exploded
+          ? "Cada peça mostra do que a mesa é feita · toque em Montar para fechar"
+          : "Arraste para girar · toque nos pontos para ver o acabamento"}
       </p>
     </div>
   );
