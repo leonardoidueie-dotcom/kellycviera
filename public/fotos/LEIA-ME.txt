@@ -1,0 +1,9 @@
+FOTOS DA LOJA
+=============
+
+loja.jpg  -> foto usada como fundo desfocado atrás da mesa no topo do site.
+             Use uma foto ampla do salão. Ela aparece escurecida e fora de
+             foco de propósito, para não competir com a mesa.
+
+As demais fotos dos produtos podem ser colocadas nesta pasta também;
+avise quais são para eu montar a galeria.

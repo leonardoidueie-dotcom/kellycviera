@@ -1,4 +1,5 @@
-import MesaViewer from "@/components/mesa-viewer";
+import MesaShowcase from "@/components/mesa-showcase";
+import PhotoBackdrop from "@/components/photo-backdrop";
 import VideoShowcase from "@/components/video-showcase";
 
 export default function Home() {
@@ -9,6 +10,9 @@ export default function Home() {
         id="mesa-3d"
         className="relative overflow-hidden bg-gradient-to-b from-grafite via-grafite-claro to-grafite"
       >
+        {/* foto da loja ao fundo, desfocada — some sozinha se não existir */}
+        <PhotoBackdrop />
+
         <div className="mx-auto max-w-6xl px-6 pt-12 md:pt-16">
           <p className="text-[10px] uppercase tracking-[0.4em] text-dourado/70">
             Tok Rústico
@@ -24,7 +28,7 @@ export default function Home() {
           </p>
         </div>
 
-        <MesaViewer />
+        <MesaShowcase />
       </section>
 
       {/* -------------------------------- Vídeo -------------------------------- */}

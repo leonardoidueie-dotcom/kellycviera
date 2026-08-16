@@ -40,8 +40,9 @@ const LEAN = 0.07; // inclinação dos painéis para dentro (rad ≈ 4°)
 
 const TOP_Y = HEIGHT - TOP_T / 2; // centro do tampo
 const UNDER_TOP = HEIGHT - TOP_T; // face inferior do tampo
-const CROSS_T = 0.14; // travessa superior do "U"
-const LEG_H = UNDER_TOP - CROSS_T; // altura dos montantes
+const CROSS_T = 0.14; // travessa superior do pé
+const SOLE_T = 0.12; // barra que fecha o pé no chão
+const LEG_H = UNDER_TOP - CROSS_T - SOLE_T; // altura dos montantes
 const FOOT_X = TOP_W / 2 - FOOT_INSET;
 const FOOT_Z = 0.30; // meia-distância entre os montantes (no chão)
 
@@ -355,7 +356,7 @@ function Mesa({
             >
               <Piece
                 size={[PANEL_T, LEG_H, PANEL_W]}
-                position={[0, LEG_H / 2, sz * FOOT_Z]}
+                position={[0, SOLE_T + LEG_H / 2, sz * FOOT_Z]}
                 rotation={[-sz * LEAN, 0, 0]}
                 maps={m1}
                 tint={sz > 0 ? "#f7f0e7" : "#ffffff"}
@@ -364,14 +365,29 @@ function Mesa({
               {sx > 0 && sz > 0 && (
                 <PartLabel
                   visible={exploded}
-                  position={[0.3, LEG_H / 2, sz * FOOT_Z + 0.18]}
+                  position={[0.3, SOLE_T + LEG_H / 2, sz * FOOT_Z + 0.18]}
                   titulo="Montantes do pé"
-                  texto="Painéis maciços de 12 cm, levemente inclinados para dentro — é o que dá o desenho em “U” invertido."
+                  texto="Painéis maciços de 12 cm fechando um retângulo entre o chão e o tampo, levemente inclinados para dentro."
                 />
               )}
             </ExplodingPiece>
           ))}
-          {/* travessa que fecha o "U" contra a face inferior do tampo */}
+          {/* barra no chão: é ela que fecha o pé num retângulo, como na peça real */}
+          <ExplodingPiece
+            exploded={exploded}
+            instant={instant}
+            explode={[0, -0.16, 0]}
+          >
+            <Piece
+              size={[PANEL_T, SOLE_T, FOOT_Z * 2 + PANEL_W]}
+              position={[0, SOLE_T / 2, 0]}
+              maps={m2}
+              tint="#f9f2e9"
+              repeat={[1, 1]}
+            />
+          </ExplodingPiece>
+
+          {/* travessa que fecha o pé contra a face inferior do tampo */}
           <ExplodingPiece
             exploded={exploded}
             instant={instant}
@@ -383,14 +399,14 @@ function Mesa({
                 CROSS_T,
                 (FOOT_Z - Math.sin(LEAN) * LEG_H) * 2 + PANEL_W,
               ]}
-              position={[0, LEG_H + CROSS_T / 2, 0]}
+              position={[0, SOLE_T + LEG_H + CROSS_T / 2, 0]}
               maps={m2}
               repeat={[1, 1]}
             />
             {sx < 0 && (
               <PartLabel
                 visible={exploded}
-                position={[-0.34, LEG_H + CROSS_T / 2, 0]}
+                position={[-0.34, SOLE_T + LEG_H + CROSS_T / 2, 0]}
                 titulo="Travessa"
                 texto="Une os dois montantes por cavilha e cola estrutural — nenhuma ferragem aparece na peça pronta."
               />
