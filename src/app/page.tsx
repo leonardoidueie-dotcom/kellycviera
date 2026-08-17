@@ -50,6 +50,29 @@ export default function Home() {
         <VideoShowcase />
       </section>
 
+      {/* ----------------------- Prancha única ----------------------- */}
+      <section
+        id="prancha-unica"
+        className="mx-auto grid max-w-6xl items-center gap-10 px-6 pb-16 md:grid-cols-2 md:gap-16 md:pb-24"
+      >
+        <VideoShowcase
+          src="/video/prancha-unica.mp4"
+          titulo="Prancha única"
+          legenda="2,55 × 1,01 m em uma só peça de madeira, sobre base de aço."
+        />
+
+        <div>
+          <h2 className="font-display text-3xl text-areia md:text-4xl">
+            Uma tábua, uma mesa
+          </h2>
+          <p className="mt-3 max-w-md text-sm leading-relaxed text-areia/60">
+            Tampos de prancha única saem de uma árvore só: a borda acompanha o
+            contorno original do tronco e o veio atravessa a mesa inteira, sem
+            emenda. Cada peça existe uma vez.
+          </p>
+        </div>
+      </section>
+
       {/* --------------------- Vídeo de apresentação --------------------- */}
       {/* só aparece quando /public/video/apresentacao.mp4 existir */}
       <section id="apresentacao" className="mx-auto max-w-4xl px-6 pb-16 md:pb-24">

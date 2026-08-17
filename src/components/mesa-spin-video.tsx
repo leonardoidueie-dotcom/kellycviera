@@ -54,6 +54,32 @@ export default function MesaSpinVideo({
     return () => mq.removeEventListener("change", apply);
   }, []);
 
+  /* --------------- o arquivo existe mesmo? --------------- */
+  // o evento onError do <video> não é confiável para arquivo ausente:
+  // em alguns navegadores ele só marca video.error e não dispara nada.
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const falhou = () => {
+      setFaltando(true);
+      onMissing?.();
+    };
+
+    video.addEventListener("error", falhou);
+    const conferir = window.setTimeout(() => {
+      const semFonte =
+        video.error !== null ||
+        video.networkState === HTMLMediaElement.NETWORK_NO_SOURCE;
+      if (video.readyState === 0 && semFonte) falhou();
+    }, 3500);
+
+    return () => {
+      video.removeEventListener("error", falhou);
+      window.clearTimeout(conferir);
+    };
+  }, [src, onMissing]);
+
   /* -------- giro automático enquanto ninguém está interagindo -------- */
   useEffect(() => {
     const video = videoRef.current;

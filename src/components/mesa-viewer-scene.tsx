@@ -87,17 +87,56 @@ function useWoodMaps(seeds: number[]) {
   return maps;
 }
 
+/**
+ * Carrega a foto da madeira real da peça (extraída da foto da loja).
+ * Se o arquivo não existir, devolve null e o veio procedural assume.
+ */
+function useFotoMadeira(url: string) {
+  const [tex, setTex] = useState<THREE.Texture | null>(null);
+
+  useEffect(() => {
+    let vivo = true;
+    new THREE.TextureLoader().load(
+      url,
+      (t) => {
+        if (!vivo) {
+          t.dispose();
+          return;
+        }
+        t.colorSpace = THREE.SRGBColorSpace;
+        t.wrapS = THREE.MirroredRepeatWrapping;
+        t.wrapT = THREE.MirroredRepeatWrapping;
+        t.anisotropy = 8;
+        setTex(t);
+      },
+      undefined,
+      () => {
+        /* sem foto, o veio desenhado por código continua valendo */
+      },
+    );
+    return () => {
+      vivo = false;
+    };
+  }, [url]);
+
+  useEffect(() => () => tex?.dispose(), [tex]);
+
+  return tex;
+}
+
 function WoodMaterial({
   maps,
+  foto,
   tint = "#ffffff",
   repeat = [1, 1],
 }: {
   maps: WoodMaps;
+  foto?: THREE.Texture | null;
   tint?: string;
   repeat?: [number, number];
 }) {
   const cloned = useMemo(() => {
-    const map = maps.map.clone();
+    const map = (foto ?? maps.map).clone();
     const bumpMap = maps.bumpMap.clone();
     const roughnessMap = maps.roughnessMap.clone();
     for (const t of [map, bumpMap, roughnessMap]) {
@@ -107,9 +146,14 @@ function WoodMaterial({
       t.repeat.set(repeat[0], repeat[1]);
     }
     map.colorSpace = THREE.SRGBColorSpace;
+    if (foto) {
+      // a foto é uma fatia da mesa real: espelhar evita emenda visível
+      map.wrapS = THREE.MirroredRepeatWrapping;
+      map.wrapT = THREE.MirroredRepeatWrapping;
+    }
     return { map, bumpMap, roughnessMap };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [maps, repeat[0], repeat[1]]);
+  }, [maps, foto, repeat[0], repeat[1]]);
 
   useEffect(
     () => () => {
@@ -125,7 +169,7 @@ function WoodMaterial({
       color={tint}
       map={cloned.map}
       bumpMap={cloned.bumpMap}
-      bumpScale={0.012}
+      bumpScale={foto ? 0.02 : 0.012}
       roughnessMap={cloned.roughnessMap}
       roughness={0.75}
       metalness={0}
@@ -142,6 +186,7 @@ type PieceProps = {
   position: [number, number, number];
   rotation?: [number, number, number];
   maps: WoodMaps;
+  foto?: THREE.Texture | null;
   tint?: string;
   repeat?: [number, number];
   radius?: number;
@@ -152,6 +197,7 @@ function Piece({
   position,
   rotation = [0, 0, 0],
   maps,
+  foto,
   tint,
   repeat = [1, 1],
   radius = 0.006,
@@ -168,7 +214,7 @@ function Piece({
       castShadow
       receiveShadow
     >
-      <WoodMaterial maps={maps} tint={tint} repeat={repeat} />
+      <WoodMaterial maps={maps} foto={foto} tint={tint} repeat={repeat} />
     </RoundedBox>
   );
 }
@@ -249,8 +295,15 @@ function Mesa({
 }) {
   const [m0, m1, m2, m3] = maps;
 
-  // leve variação de tom entre as pranchas (multiplicador sobre o mel base)
-  const tints = ["#ffffff", "#f6efe6", "#fffaf2"];
+  // madeira real da peça, recortada da foto da loja
+  const fotoTampo = useFotoMadeira("/texturas/madeira-tampo.jpg");
+  // os pés são da mesma madeira; muda só a direção do veio
+  const fotoPe = fotoTampo;
+
+  // com a foto real o tom já vem da própria madeira: a variação fica mínima
+  const tints = fotoTampo
+    ? ["#ffffff", "#f7f2ec", "#fffdf8"]
+    : ["#ffffff", "#f6efe6", "#fffaf2"];
 
   // quanto cada grupo de peças se afasta na vista explodida
   const LIFT = 0.42; // o tampo sobe
@@ -272,6 +325,7 @@ function Mesa({
             size={[INNER_W, TOP_T - 0.004, PLANK_D]}
             position={[0, TOP_Y - 0.002, z]}
             maps={maps[i % maps.length]}
+            foto={fotoTampo}
             tint={tints[i]}
             repeat={[2.2, 1]}
           />
@@ -296,6 +350,7 @@ function Mesa({
           size={[TOP_W, TOP_T, FRAME]}
           position={[0, TOP_Y, -(TOP_D - FRAME) / 2]}
           maps={m3}
+          foto={fotoTampo}
           repeat={[2.4, 1]}
         />
       </ExplodingPiece>
@@ -308,6 +363,7 @@ function Mesa({
           size={[TOP_W, TOP_T, FRAME]}
           position={[0, TOP_Y, (TOP_D - FRAME) / 2]}
           maps={m3}
+          foto={fotoTampo}
           tint="#faf3ea"
           repeat={[2.4, 1]}
         />
@@ -327,6 +383,7 @@ function Mesa({
           size={[FRAME, TOP_T, INNER_D]}
           position={[-(TOP_W - FRAME) / 2, TOP_Y, 0]}
           maps={m0}
+          foto={fotoTampo}
           repeat={[1, 1]}
         />
       </ExplodingPiece>
@@ -339,6 +396,7 @@ function Mesa({
           size={[FRAME, TOP_T, INNER_D]}
           position={[(TOP_W - FRAME) / 2, TOP_Y, 0]}
           maps={m0}
+          foto={fotoTampo}
           tint="#fbf5ec"
           repeat={[1, 1]}
         />
@@ -359,6 +417,7 @@ function Mesa({
                 position={[0, SOLE_T + LEG_H / 2, sz * FOOT_Z]}
                 rotation={[-sz * LEAN, 0, 0]}
                 maps={m1}
+                foto={fotoPe}
                 tint={sz > 0 ? "#f7f0e7" : "#ffffff"}
                 repeat={[1, 1.4]}
               />
@@ -382,6 +441,7 @@ function Mesa({
               size={[PANEL_T, SOLE_T, FOOT_Z * 2 + PANEL_W]}
               position={[0, SOLE_T / 2, 0]}
               maps={m2}
+              foto={fotoPe}
               tint="#f9f2e9"
               repeat={[1, 1]}
             />
@@ -401,6 +461,7 @@ function Mesa({
               ]}
               position={[0, SOLE_T + LEG_H + CROSS_T / 2, 0]}
               maps={m2}
+              foto={fotoPe}
               repeat={[1, 1]}
             />
             {sx < 0 && (
