@@ -5,10 +5,16 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // fundo quente: quase preto, mas puxado para a madeira
         grafite: {
-          DEFAULT: "#141210",
-          claro: "#1E1A17",
-          borda: "#2A2521",
+          DEFAULT: "#171008",
+          claro: "#241A11",
+          borda: "#3A2A1C",
+        },
+        // marrons intermediários, para as camadas entre o fundo e o dourado
+        casca: {
+          DEFAULT: "#4A3524",
+          claro: "#6B4B31",
         },
         dourado: {
           DEFAULT: "#C9A227",
@@ -16,7 +22,7 @@ const config: Config = {
           fosco: "#8A6F1C",
         },
         mel: "#B98B52",
-        areia: "#E8DFD2",
+        areia: "#EFE3D2",
       },
       fontFamily: {
         display: ["var(--font-cormorant)", "Georgia", "serif"],

@@ -3,56 +3,75 @@
 import { useEffect, useState } from "react";
 
 /**
- * Foto da loja usada como fundo de uma seção.
+ * Foto de fundo da seção — desfocada e escurecida, para servir de ambiente
+ * sem competir com a peça na frente.
  *
- * Fica desfocada e escurecida de propósito: serve de ambiente, não de cena.
- * Se a foto ainda não tiver sido publicada, nada é renderizado e o gradiente
- * grafite da seção continua valendo.
+ * Recebe uma lista de candidatas e usa a primeira que existir. Assim a foto
+ * ampla do salão entra assim que for publicada, e até lá a própria foto da
+ * mesa segura o ambiente — bem melhor que fundo preto.
  */
 export default function PhotoBackdrop({
-  src = "/fotos/loja.jpg",
-  blur = 8,
-  escurecer = 0.82,
+  fontes = ["/fotos/loja.jpg", "/fotos/mesa-jantar.jpg"],
+  blur = 14,
+  escurecer = 0.7,
 }: {
-  src?: string;
-  /** desfoque em px — quanto maior, mais o fundo "sai de foco" */
+  fontes?: string[];
+  /** desfoque em px */
   blur?: number;
   /** 0 = foto crua, 1 = preto total */
   escurecer?: number;
 }) {
-  const [ok, setOk] = useState(false);
+  const [src, setSrc] = useState<string | null>(null);
 
   useEffect(() => {
-    const img = new Image();
-    img.src = src;
-    img.onload = () => setOk(true);
-    return () => {
-      img.onload = null;
-    };
-  }, [src]);
+    let vivo = true;
 
-  if (!ok) return null;
+    const tentar = (i: number) => {
+      if (!vivo || i >= fontes.length) return;
+      const img = new Image();
+      img.src = fontes[i];
+      img.onload = () => vivo && setSrc(fontes[i]);
+      img.onerror = () => tentar(i + 1);
+    };
+
+    tentar(0);
+    return () => {
+      vivo = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fontes.join("|")]);
+
+  if (!src) return null;
 
   return (
-    <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+    <div aria-hidden className="pointer-events-none absolute inset-0 z-0">
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{
           backgroundImage: `url(${src})`,
-          filter: `blur(${blur}px) saturate(0.85)`,
-          transform: "scale(1.08)", // esconde a borda que o blur deixa
-          transition: "filter 700ms ease",
+          filter: `blur(${blur}px) saturate(1.05)`,
+          transform: "scale(1.1)", // esconde a borda que o blur deixa
+          transition: "filter 700ms ease, transform 700ms ease",
         }}
       />
+
+      {/* véu quente: escurece sem apagar a cor da madeira */}
       <div
         className="absolute inset-0"
         style={{
-          backgroundColor: `rgba(20, 18, 16, ${escurecer})`,
+          backgroundColor: `rgba(23, 16, 8, ${escurecer})`,
           transition: "background-color 700ms ease",
         }}
       />
-      {/* leve vinheta, para a mesa ficar no centro da atenção */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_35%,rgba(20,18,16,0.85)_100%)]" />
+
+      {/* brilho âmbar no alto, como a luz pendente da loja */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_45%_at_50%_18%,rgba(201,162,39,0.16),transparent_70%)]" />
+
+      {/* vinheta, para a peça ficar no centro da atenção */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_38%,rgba(23,16,8,0.8)_100%)]" />
+
+      {/* emenda com a seção seguinte */}
+      <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-grafite" />
     </div>
   );
 }

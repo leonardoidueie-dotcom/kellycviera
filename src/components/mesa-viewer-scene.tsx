@@ -1,8 +1,6 @@
 "use client";
 
 import {
-  Component,
-  Suspense,
   useCallback,
   useEffect,
   useMemo,
@@ -13,7 +11,6 @@ import {
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import {
   ContactShadows,
-  Environment,
   Html,
   OrbitControls,
   RoundedBox,
@@ -70,6 +67,9 @@ const EXPLODED_LOOK_AT = 0.2;
 const MIN_FACTOR = 0.55;
 const MAX_FACTOR = 1.5;
 const FALLBACK_DIST = 3.8;
+
+/** fotos usadas como ambiente da cena, na ordem de preferência */
+const AMBIENTE = ["/fotos/loja.jpg", "/fotos/mesa-jantar.jpg"];
 
 /* -------------------------------------------------------------------------- */
 /*  Material de madeira                                                        */
@@ -709,36 +709,59 @@ function AutoRotate({
 /* -------------------------------------------------------------------------- */
 
 /**
- * O preset do drei baixa um .hdr de CDN externo. Se a rede falhar (ou o CDN
- * estiver bloqueado), o erro sobe e derruba o Canvas inteiro — aqui ele fica
- * contido: a mesa continua de pé, só sem o reflexo do ambiente.
+ * Usa uma foto da própria loja como ambiente da cena: a madeira passa a
+ * refletir as cores daquele salão — luz quente do teto, parede clara, piso.
+ * É o que tira a peça do vazio preto e a coloca dentro de um lugar.
+ *
+ * Sem dependência de CDN externo: a foto já está no site.
  */
-class QuietBoundary extends Component<
-  { children: ReactNode },
-  { failed: boolean }
-> {
-  state = { failed: false };
+function AmbienteDaLoja({ fontes }: { fontes: string[] }) {
+  const scene = useThree((s) => s.scene);
 
-  static getDerivedStateFromError() {
-    return { failed: true };
-  }
+  useEffect(() => {
+    let vivo = true;
+    const loader = new THREE.TextureLoader();
 
-  componentDidCatch() {
-    /* silencioso de propósito: é um detalhe cosmético */
-  }
+    const tentar = (i: number) => {
+      if (!vivo || i >= fontes.length) return;
+      loader.load(
+        fontes[i],
+        (tex) => {
+          if (!vivo) {
+            tex.dispose();
+            return;
+          }
+          tex.mapping = THREE.EquirectangularReflectionMapping;
+          tex.colorSpace = THREE.SRGBColorSpace;
+          scene.environment = tex;
+          scene.environmentIntensity = 0.9;
+        },
+        undefined,
+        () => tentar(i + 1),
+      );
+    };
 
-  render() {
-    return this.state.failed ? null : this.props.children;
-  }
+    tentar(0);
+
+    return () => {
+      vivo = false;
+      const atual = scene.environment;
+      scene.environment = null;
+      atual?.dispose();
+    };
+  }, [scene, fontes]);
+
+  return null;
 }
 
 function Lights() {
   return (
     <>
-      <ambientLight intensity={0.45} />
+      <ambientLight intensity={0.35} color="#FFE6C4" />
       <directionalLight
         position={[3.2, 4.5, 2.6]}
-        intensity={1.6}
+        intensity={1.35}
+        color="#FFEAC8"
         castShadow
         shadow-mapSize={[2048, 2048]}
         shadow-bias={-0.0005}
@@ -749,8 +772,8 @@ function Lights() {
         shadow-camera-near={0.5}
         shadow-camera-far={12}
       />
-      {/* preenchimento frio para separar a mesa do fundo grafite */}
-      <directionalLight position={[-3, 2, -2.5]} intensity={0.35} color="#cfd8e3" />
+      {/* contraluz âmbar: desenha a borda da peça contra o fundo escuro */}
+      <directionalLight position={[-3.5, 2.2, -3]} intensity={0.5} color="#C98A3C" />
     </>
   );
 }
@@ -834,12 +857,8 @@ export default function MesaViewerScene({
           color="#000000"
         />
 
-        {/* ambiente isolado: carrega depois e nunca derruba a cena */}
-        <QuietBoundary>
-          <Suspense fallback={null}>
-            <Environment preset="apartment" />
-          </Suspense>
-        </QuietBoundary>
+        {/* a luz do ambiente vem da foto da própria loja */}
+        <AmbienteDaLoja fontes={AMBIENTE} />
 
         <OrbitControls
           ref={controlsRef}

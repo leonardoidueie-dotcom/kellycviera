@@ -1,4 +1,5 @@
 import Catalogo from "@/components/catalogo";
+import PhotoBackdrop from "@/components/photo-backdrop";
 import HeroMesa from "@/components/hero-mesa";
 import Orcamento from "@/components/orcamento";
 import SiteFooter from "@/components/site-footer";
@@ -17,8 +18,17 @@ export default function Home() {
         <HeroMesa />
 
         {/* ------------------------ 2. Como é feita ------------------------ */}
-        <section className="border-y border-grafite-borda bg-grafite-claro/30">
-          <div className="mx-auto grid max-w-6xl gap-10 px-6 py-16 md:grid-cols-3 md:gap-12 md:py-20">
+        <section className="relative overflow-hidden border-y border-grafite-borda bg-grafite-claro/40">
+          {/* a própria madeira da peça, quase apagada, como papel de parede */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 opacity-[0.07] mix-blend-screen"
+            style={{
+              backgroundImage: "url(/texturas/madeira-tampo.jpg)",
+              backgroundSize: "760px auto",
+            }}
+          />
+          <div className="relative mx-auto grid max-w-6xl gap-10 px-6 py-16 md:grid-cols-3 md:gap-12 md:py-20">
             {[
               {
                 titulo: "Madeira de demolição",
@@ -54,9 +64,15 @@ export default function Home() {
         {/* ------------------------ 4. Quem somos ------------------------ */}
         <section
           id="quem-somos"
-          className="border-t border-grafite-borda bg-grafite-claro/30"
+          className="relative overflow-hidden border-t border-grafite-borda"
         >
-          <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 py-20 md:grid-cols-2 md:py-28">
+          <PhotoBackdrop
+            fontes={["/fotos/loja.jpg", "/fotos/mesa-centro.png"]}
+            blur={22}
+            escurecer={0.88}
+          />
+
+          <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-6 py-20 md:grid-cols-2 md:py-28">
             <div>
               <p className="text-[10px] uppercase tracking-[0.4em] text-dourado/70">
                 Quem somos

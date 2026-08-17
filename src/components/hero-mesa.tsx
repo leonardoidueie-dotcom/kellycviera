@@ -29,11 +29,11 @@ export default function HeroMesa() {
   return (
     <section
       id="mesa-3d"
-      className="relative overflow-hidden bg-gradient-to-b from-grafite via-grafite-claro to-grafite pt-20"
+      className="relative overflow-hidden pt-20"
     >
       <PhotoBackdrop
-        blur={interagindo ? 18 : 8}
-        escurecer={interagindo ? 0.92 : 0.78}
+        blur={interagindo ? 20 : 10}
+        escurecer={interagindo ? 0.86 : 0.55}
       />
 
       <div className="relative mx-auto max-w-6xl px-6 pt-10 md:pt-14">
