@@ -3,18 +3,24 @@
 import { useCallback, useState } from "react";
 
 import MesaSpin360 from "./mesa-spin-360";
+import MesaSpinVideo from "./mesa-spin-video";
 import MesaViewer from "./mesa-viewer";
 
 /**
- * Decide sozinho como mostrar a mesa:
+ * Escolhe sozinho a melhor forma de mostrar a mesa, na ordem de realismo:
  *
- *  1. se existirem fotos reais em /public/mesa-360/, usa o giro fotográfico
- *     (fotorrealista, porque são fotos da peça de verdade);
- *  2. se não existirem, cai no visualizador 3D.
+ *  1. vídeo real girando em torno da peça (/public/video/mesa-360.mp4),
+ *     arrastável — é filmagem, então é fotorrealista;
+ *  2. sequência de fotos reais (/public/mesa-360/frame-01.jpg…);
+ *  3. o visualizador 3D, que sempre funciona.
  *
- * Ou seja: basta publicar as fotos na pasta que o site se atualiza sozinho,
- * sem tocar em código.
+ * Cada etapa avisa quando o arquivo não existe e passa a vez para a
+ * seguinte. Na prática: basta publicar o vídeo ou as fotos que o site
+ * se atualiza, sem tocar em código.
  */
+
+type Etapa = "video" | "fotos" | "3d";
+
 export default function MesaShowcase({
   frames = 24,
   className = "",
@@ -22,20 +28,24 @@ export default function MesaShowcase({
   frames?: number;
   className?: string;
 }) {
-  const [semFotos, setSemFotos] = useState(false);
-  const handleMissing = useCallback(() => setSemFotos(true), []);
+  const [etapa, setEtapa] = useState<Etapa>("video");
 
-  if (semFotos) return <MesaViewer className={className} />;
+  const semVideo = useCallback(() => setEtapa("fotos"), []);
+  const semFotos = useCallback(() => setEtapa("3d"), []);
 
-  return (
-    <>
+  if (etapa === "video") {
+    return <MesaSpinVideo className={className} onMissing={semVideo} />;
+  }
+
+  if (etapa === "fotos") {
+    return (
       <MesaSpin360
         frames={frames}
         className={className}
-        onMissing={handleMissing}
+        onMissing={semFotos}
       />
-      {/* enquanto as fotos não respondem, nada é renderizado pelo giro;
-          o 3D só entra depois que sabemos que elas não existem */}
-    </>
-  );
+    );
+  }
+
+  return <MesaViewer className={className} />;
 }

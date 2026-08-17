@@ -49,6 +49,17 @@ export default function Home() {
 
         <VideoShowcase />
       </section>
+
+      {/* --------------------- Vídeo de apresentação --------------------- */}
+      {/* só aparece quando /public/video/apresentacao.mp4 existir */}
+      <section id="apresentacao" className="mx-auto max-w-4xl px-6 pb-16 md:pb-24">
+        <VideoShowcase
+          src="/video/apresentacao.mp4"
+          vertical={false}
+          titulo="Quem faz"
+          legenda="A história da loja contada por quem está atrás das peças."
+        />
+      </section>
     </main>
   );
 }

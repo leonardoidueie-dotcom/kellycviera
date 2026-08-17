@@ -8,6 +8,8 @@ type VideoShowcaseProps = {
   titulo?: string;
   legenda?: string;
   className?: string;
+  /** vídeo de celular (9/16). false para vídeo deitado (16/9) */
+  vertical?: boolean;
 };
 
 /**
@@ -20,6 +22,7 @@ export default function VideoShowcase({
   titulo = "A loja por dentro",
   legenda = "Peças em madeira maciça e de demolição, montadas e acabadas à mão.",
   className = "",
+  vertical = true,
 }: VideoShowcaseProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [playing, setPlaying] = useState(false);
@@ -58,12 +61,16 @@ export default function VideoShowcase({
     else video.pause();
   };
 
+  if (failed) return null;
+
   const btn =
     "rounded-full border border-dourado/30 bg-grafite/70 px-3 py-1.5 text-[11px] uppercase tracking-[0.18em] text-areia/85 backdrop-blur transition hover:border-dourado/70 hover:text-dourado focus:outline-none focus-visible:ring-1 focus-visible:ring-dourado/70";
 
   return (
     <figure
-      className={`relative mx-auto aspect-[9/16] w-full max-w-[420px] overflow-hidden rounded-lg border border-grafite-borda bg-grafite-claro ${className}`}
+      className={`relative mx-auto w-full overflow-hidden rounded-lg border border-grafite-borda bg-grafite-claro ${
+        vertical ? "aspect-[9/16] max-w-[420px]" : "aspect-video"
+      } ${className}`}
     >
       <video
         ref={videoRef}
@@ -80,12 +87,6 @@ export default function VideoShowcase({
         onClick={toggle}
         className="h-full w-full cursor-pointer object-cover"
       />
-
-      {failed && (
-        <p className="pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2 px-6 text-center text-xs leading-relaxed text-areia/40">
-          Não foi possível reproduzir o vídeo neste navegador.
-        </p>
-      )}
 
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-grafite/80 via-transparent to-transparent" />
 
