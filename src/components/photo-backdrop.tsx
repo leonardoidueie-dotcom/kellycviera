@@ -40,12 +40,16 @@ export default function PhotoBackdrop({
         style={{
           backgroundImage: `url(${src})`,
           filter: `blur(${blur}px) saturate(0.85)`,
-          transform: "scale(1.06)", // esconde a borda que o blur deixa
+          transform: "scale(1.08)", // esconde a borda que o blur deixa
+          transition: "filter 700ms ease",
         }}
       />
       <div
         className="absolute inset-0"
-        style={{ backgroundColor: `rgba(20, 18, 16, ${escurecer})` }}
+        style={{
+          backgroundColor: `rgba(20, 18, 16, ${escurecer})`,
+          transition: "background-color 700ms ease",
+        }}
       />
       {/* leve vinheta, para a mesa ficar no centro da atenção */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_35%,rgba(20,18,16,0.85)_100%)]" />

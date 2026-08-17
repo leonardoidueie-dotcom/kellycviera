@@ -62,7 +62,7 @@ const GROUP_Y = -HEIGHT / 2;
 const DEFAULT_DIR = new THREE.Vector3(2.45, 1.5, 2.7).normalize();
 /** raio da esfera que envolve a mesa inteira + margem de enquadramento */
 const FIT_RADIUS =
-  Math.hypot(TOP_W / 2, TOP_D / 2, HEIGHT / 2) * 1.06;
+  Math.hypot(TOP_W / 2, TOP_D / 2, HEIGHT / 2) * 1.16;
 /** quanto a câmera recua quando a mesa está desmontada */
 const EXPLODED_FIT = 1.36;
 /** as peças sobem ao desmontar, então o centro da órbita sobe junto */

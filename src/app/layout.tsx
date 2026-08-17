@@ -19,7 +19,14 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Tok Rústico — Móveis em madeira maciça e de demolição",
   description:
-    "Mesas, bancos e aparadores em madeira maciça e de demolição. Peças únicas, acabamento à mão.",
+    "Mesas, aparadores e bancos em madeira maciça e de demolição, feitos à mão e sob medida. Veja a mesa em 3D, gire e desmonte para conhecer a construção.",
+  openGraph: {
+    title: "Tok Rústico — Móveis em madeira maciça e de demolição",
+    description:
+      "Peças únicas em madeira maciça e de demolição, feitas à mão e sob medida.",
+    type: "website",
+    locale: "pt_BR",
+  },
 };
 
 export default function RootLayout({
