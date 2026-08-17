@@ -67,7 +67,7 @@ export default function Home() {
           className="relative overflow-hidden border-t border-grafite-borda"
         >
           <PhotoBackdrop
-            fontes={["/fotos/loja.jpg", "/fotos/mesa-centro.png"]}
+            fontes={["/fotos/loja.jpg", "/fotos/ambiente-cozinha.png"]}
             blur={22}
             escurecer={0.88}
           />
@@ -106,10 +106,10 @@ export default function Home() {
 
             {/* aparece quando /public/video/apresentacao.mp4 existir */}
             <VideoShowcase
-              src="/video/apresentacao.mp4"
+              src="/video/mesas-tour.mp4"
               vertical
-              titulo="A loja por quem faz"
-              legenda="Madeira, veio e o que está por trás de cada peça."
+              titulo="Mesa é história"
+              legenda="Um passeio pelas mesas do salão, contado por quem as escolhe."
             />
           </div>
         </section>

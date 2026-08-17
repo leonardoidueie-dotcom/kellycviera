@@ -69,7 +69,11 @@ const MAX_FACTOR = 1.5;
 const FALLBACK_DIST = 3.8;
 
 /** fotos usadas como ambiente da cena, na ordem de preferência */
-const AMBIENTE = ["/fotos/loja.jpg", "/fotos/mesa-jantar.jpg"];
+const AMBIENTE = [
+  "/fotos/loja.jpg",
+  "/fotos/ambiente-cozinha.png",
+  "/fotos/mesa-jantar.jpg",
+];
 
 /* -------------------------------------------------------------------------- */
 /*  Material de madeira                                                        */
@@ -734,7 +738,7 @@ function AmbienteDaLoja({ fontes }: { fontes: string[] }) {
           tex.mapping = THREE.EquirectangularReflectionMapping;
           tex.colorSpace = THREE.SRGBColorSpace;
           scene.environment = tex;
-          scene.environmentIntensity = 0.9;
+          scene.environmentIntensity = 1.15;
         },
         undefined,
         () => tentar(i + 1),
@@ -752,6 +756,36 @@ function AmbienteDaLoja({ fontes }: { fontes: string[] }) {
   }, [scene, fontes]);
 
   return null;
+}
+
+/**
+ * Disco de chão que escurece sob a mesa e se dissolve nas bordas.
+ * Sem ele a peça parece recortada e colada sobre o fundo.
+ */
+function Chao() {
+  const textura = useMemo(() => {
+    const canvas = document.createElement("canvas");
+    canvas.width = canvas.height = 512;
+    const ctx = canvas.getContext("2d")!;
+    const g = ctx.createRadialGradient(256, 256, 0, 256, 256, 256);
+    g.addColorStop(0, "rgba(60, 42, 26, 0.85)");
+    g.addColorStop(0.45, "rgba(45, 31, 19, 0.5)");
+    g.addColorStop(1, "rgba(23, 16, 8, 0)");
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, 512, 512);
+    const tex = new THREE.CanvasTexture(canvas);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    return tex;
+  }, []);
+
+  useEffect(() => () => textura.dispose(), [textura]);
+
+  return (
+    <mesh position={[0, GROUP_Y, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+      <circleGeometry args={[3.4, 64]} />
+      <meshBasicMaterial map={textura} transparent depthWrite={false} />
+    </mesh>
+  );
 }
 
 function Lights() {
@@ -832,9 +866,17 @@ export default function MesaViewerScene({
   return (
     <div className={`relative h-[60vh] w-full md:h-[80vh] ${className}`}>
       <Canvas
-        shadows
         dpr={[1, 2]}
-        gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
+        gl={{
+          antialias: true,
+          alpha: true,
+          powerPreference: "high-performance",
+          // curva de resposta de câmera: tira o "estouro" das luzes e
+          // aproxima o render de uma fotografia
+          toneMapping: THREE.ACESFilmicToneMapping,
+          toneMappingExposure: 1.0,
+        }}
+        shadows="soft"
         camera={{
           position: DEFAULT_DIR.clone().multiplyScalar(FALLBACK_DIST).toArray(),
           fov: 38,
@@ -847,13 +889,15 @@ export default function MesaViewerScene({
         {/* com a mesa desmontada quem explica são as etiquetas das peças */}
         {!exploded && <Hotspots active={active} onSelect={setActive} />}
 
+        <Chao />
+
         <ContactShadows
           position={[0, GROUP_Y + 0.001, 0]}
-          opacity={0.62}
-          scale={5.2}
-          blur={2.6}
-          far={1.4}
-          resolution={1024}
+          opacity={0.75}
+          scale={4.6}
+          blur={2.2}
+          far={1.2}
+          resolution={1536}
           color="#000000"
         />
 

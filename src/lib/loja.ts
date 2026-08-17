@@ -75,19 +75,19 @@ export const produtos: Produto[] = [
   },
   {
     id: "laterais",
-    nome: "Mesas laterais",
-    medidas: "Dupla, alturas diferentes",
+    nome: "Mesa de varanda",
+    medidas: "Sob medida",
     descricao:
-      "Tampos redondos sobre estrutura aparente em madeira maciça. Encaixam uma sob a outra.",
-    foto: "/fotos/laterais.jpg",
+      "Madeira maciça para área externa coberta, com acabamento que aguenta a variação de umidade.",
+    foto: "/fotos/mesa-varanda.png",
   },
   {
     id: "bancos",
-    nome: "Bancos e poltronas",
-    medidas: "Sob medida",
+    nome: "Mesa de família",
+    medidas: "Até 12 lugares",
     descricao:
-      "Assentos em ripado de madeira maciça, para varanda, entrada ou área externa coberta.",
-    foto: "/fotos/bancos.jpg",
+      "Mesas longas para casa de campo e varanda gourmet, com bancos e cadeiras da mesma madeira.",
+    foto: "/fotos/ambiente-cozinha.png",
   },
   {
     id: "aparadores",
@@ -95,7 +95,7 @@ export const produtos: Produto[] = [
     medidas: "Sob medida",
     descricao:
       "Portas em madeira maciça com veio contínuo, sobre base de aço ou pés de madeira.",
-    foto: "/fotos/aparadores.jpg",
+    foto: "/fotos/mesa-pequena.png",
   },
 ];
 

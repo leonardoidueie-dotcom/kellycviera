@@ -11,7 +11,11 @@ import { useEffect, useState } from "react";
  * mesa segura o ambiente — bem melhor que fundo preto.
  */
 export default function PhotoBackdrop({
-  fontes = ["/fotos/loja.jpg", "/fotos/mesa-jantar.jpg"],
+  fontes = [
+    "/fotos/loja.jpg",
+    "/fotos/ambiente-cozinha.png",
+    "/fotos/mesa-jantar.jpg",
+  ],
   blur = 14,
   escurecer = 0.7,
 }: {

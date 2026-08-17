@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
  */
 export default function Logo({
   className = "h-10 w-10",
-  src = "/fotos/logo.png",
+  src = "/fotos/logo.jpg",
 }: {
   className?: string;
   src?: string;
