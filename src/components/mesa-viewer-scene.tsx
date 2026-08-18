@@ -70,6 +70,13 @@ const MIN_FACTOR = 0.55;
 const MAX_FACTOR = 1.5;
 const FALLBACK_DIST = 3.8;
 
+/** conjunto PBR opcional — se existir, dá relevo de verdade à madeira */
+const PBR = {
+  cor: "/texturas/pbr/madeira-cor.jpg",
+  normal: "/texturas/pbr/madeira-normal.jpg",
+  rugosidade: "/texturas/pbr/madeira-rugosidade.jpg",
+};
+
 /** modelo 3D profissional, se houver um publicado */
 const MODELO_GLB = "/modelo/mesa.glb";
 
@@ -133,21 +140,90 @@ function useFotoMadeira(url: string) {
   return tex;
 }
 
+type Pbr = {
+  cor: THREE.Texture | null;
+  normal: THREE.Texture | null;
+  rugosidade: THREE.Texture | null;
+};
+
+/**
+ * Carrega um conjunto PBR publicado em /public/texturas/pbr/.
+ *
+ * Cada mapa é opcional: o que existir entra, o que faltar continua vindo do
+ * veio gerado por código. O mapa de normais é o que mais muda a percepção —
+ * é ele que faz a luz correr pelo veio em vez de deslizar num plano liso.
+ */
+function usePbrMadeira(): Pbr {
+  const [pbr, setPbr] = useState<Pbr>({
+    cor: null,
+    normal: null,
+    rugosidade: null,
+  });
+
+  useEffect(() => {
+    let vivo = true;
+    const loader = new THREE.TextureLoader();
+    const carregados: THREE.Texture[] = [];
+
+    const carregar = (url: string, chave: keyof Pbr, cor: boolean) =>
+      loader.load(
+        url,
+        (tex) => {
+          if (!vivo) {
+            tex.dispose();
+            return;
+          }
+          if (cor) tex.colorSpace = THREE.SRGBColorSpace;
+          tex.wrapS = THREE.RepeatWrapping;
+          tex.wrapT = THREE.RepeatWrapping;
+          tex.anisotropy = 8;
+          carregados.push(tex);
+          setPbr((atual) => ({ ...atual, [chave]: tex }));
+        },
+        undefined,
+        () => {
+          /* mapa ausente: segue sem ele */
+        },
+      );
+
+    carregar(PBR.cor, "cor", true);
+    carregar(PBR.normal, "normal", false);
+    carregar(PBR.rugosidade, "rugosidade", false);
+
+    return () => {
+      vivo = false;
+      carregados.forEach((t) => t.dispose());
+    };
+  }, []);
+
+  return pbr;
+}
+
 function WoodMaterial({
   maps,
   foto,
+  pbr,
   tint = "#ffffff",
   repeat = [1, 1],
 }: {
   maps: WoodMaps;
   foto?: THREE.Texture | null;
+  pbr?: Pbr;
   tint?: string;
   repeat?: [number, number];
 }) {
   const cloned = useMemo(() => {
-    const map = (foto ?? maps.map).clone();
+    // cor: PBR publicado > foto da peça real > veio gerado por código
+    const map = (pbr?.cor ?? foto ?? maps.map).clone();
     const bumpMap = maps.bumpMap.clone();
-    const roughnessMap = maps.roughnessMap.clone();
+    const roughnessMap = (pbr?.rugosidade ?? maps.roughnessMap).clone();
+    const normalMap = pbr?.normal ? pbr.normal.clone() : null;
+    if (normalMap) {
+      normalMap.wrapS = THREE.RepeatWrapping;
+      normalMap.wrapT = THREE.RepeatWrapping;
+      normalMap.repeat.set(repeat[0], repeat[1]);
+      normalMap.needsUpdate = true;
+    }
     for (const t of [map, bumpMap, roughnessMap]) {
       t.needsUpdate = true;
       t.wrapS = THREE.RepeatWrapping;
@@ -160,15 +236,16 @@ function WoodMaterial({
       map.wrapS = THREE.MirroredRepeatWrapping;
       map.wrapT = THREE.MirroredRepeatWrapping;
     }
-    return { map, bumpMap, roughnessMap };
+    return { map, bumpMap, roughnessMap, normalMap };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [maps, foto, repeat[0], repeat[1]]);
+  }, [maps, foto, pbr?.cor, pbr?.normal, pbr?.rugosidade, repeat[0], repeat[1]]);
 
   useEffect(
     () => () => {
       cloned.map.dispose();
       cloned.bumpMap.dispose();
       cloned.roughnessMap.dispose();
+      cloned.normalMap?.dispose();
     },
     [cloned],
   );
@@ -177,7 +254,12 @@ function WoodMaterial({
     <meshStandardMaterial
       color={tint}
       map={cloned.map}
-      bumpMap={cloned.bumpMap}
+      // com mapa de normais o relevo vem dele; o bump sairia dobrado
+      normalMap={cloned.normalMap ?? undefined}
+      normalScale={
+        cloned.normalMap ? new THREE.Vector2(0.85, 0.85) : undefined
+      }
+      bumpMap={cloned.normalMap ? undefined : cloned.bumpMap}
       bumpScale={foto ? 0.02 : 0.012}
       roughnessMap={cloned.roughnessMap}
       roughness={0.75}
@@ -196,6 +278,7 @@ type PieceProps = {
   rotation?: [number, number, number];
   maps: WoodMaps;
   foto?: THREE.Texture | null;
+  pbr?: Pbr;
   tint?: string;
   repeat?: [number, number];
   radius?: number;
@@ -207,6 +290,7 @@ function Piece({
   rotation = [0, 0, 0],
   maps,
   foto,
+  pbr,
   tint,
   repeat = [1, 1],
   radius = 0.006,
@@ -223,7 +307,13 @@ function Piece({
       castShadow
       receiveShadow
     >
-      <WoodMaterial maps={maps} foto={foto} tint={tint} repeat={repeat} />
+      <WoodMaterial
+        maps={maps}
+        foto={foto}
+        pbr={pbr}
+        tint={tint}
+        repeat={repeat}
+      />
     </RoundedBox>
   );
 }
@@ -306,6 +396,7 @@ function Mesa({
 
   // madeira real da peça, recortada da foto da loja
   const fotoTampo = useFotoMadeira("/texturas/madeira-tampo.jpg");
+  const pbr = usePbrMadeira();
   // os pés são da mesma madeira; muda só a direção do veio
   const fotoPe = fotoTampo;
 
@@ -335,6 +426,7 @@ function Mesa({
             position={[0, TOP_Y - 0.002, z]}
             maps={maps[i % maps.length]}
             foto={fotoTampo}
+          pbr={pbr}
             tint={tints[i]}
             repeat={[2.2, 1]}
           />
@@ -360,6 +452,7 @@ function Mesa({
           position={[0, TOP_Y, -(TOP_D - FRAME) / 2]}
           maps={m3}
           foto={fotoTampo}
+          pbr={pbr}
           repeat={[2.4, 1]}
         />
       </ExplodingPiece>
@@ -373,6 +466,7 @@ function Mesa({
           position={[0, TOP_Y, (TOP_D - FRAME) / 2]}
           maps={m3}
           foto={fotoTampo}
+          pbr={pbr}
           tint="#faf3ea"
           repeat={[2.4, 1]}
         />
@@ -393,6 +487,7 @@ function Mesa({
           position={[-(TOP_W - FRAME) / 2, TOP_Y, 0]}
           maps={m0}
           foto={fotoTampo}
+          pbr={pbr}
           repeat={[1, 1]}
         />
       </ExplodingPiece>
@@ -406,6 +501,7 @@ function Mesa({
           position={[(TOP_W - FRAME) / 2, TOP_Y, 0]}
           maps={m0}
           foto={fotoTampo}
+          pbr={pbr}
           tint="#fbf5ec"
           repeat={[1, 1]}
         />
@@ -427,6 +523,7 @@ function Mesa({
                 rotation={[-sz * LEAN, 0, 0]}
                 maps={m1}
                 foto={fotoPe}
+                pbr={pbr}
                 tint={sz > 0 ? "#f7f0e7" : "#ffffff"}
                 repeat={[1, 1.4]}
               />
@@ -451,6 +548,7 @@ function Mesa({
               position={[0, SOLE_T / 2, 0]}
               maps={m2}
               foto={fotoPe}
+                pbr={pbr}
               tint="#f9f2e9"
               repeat={[1, 1]}
             />
@@ -471,6 +569,7 @@ function Mesa({
               position={[0, SOLE_T + LEG_H + CROSS_T / 2, 0]}
               maps={m2}
               foto={fotoPe}
+                pbr={pbr}
               repeat={[1, 1]}
             />
             {sx < 0 && (

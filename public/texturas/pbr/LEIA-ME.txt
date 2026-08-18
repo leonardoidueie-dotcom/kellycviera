@@ -1,0 +1,34 @@
+TEXTURA PBR DA MADEIRA  (opcional, deixa o 3D bem mais real)
+============================================================
+
+Baixe um material de madeira em https://polyhaven.com/textures
+(licença CC0 — uso comercial liberado, sem atribuição obrigatória).
+
+Na página do material, escolha resolução 2K e formato JPG.
+O arquivo baixado é um ZIP. Descompacte e renomeie assim:
+
+  ..._diff_2k.jpg      ->  madeira-cor.jpg
+  ..._nor_gl_2k.jpg    ->  madeira-normal.jpg      (o "gl", não o "dx")
+  ..._rough_2k.jpg     ->  madeira-rugosidade.jpg
+
+Coloque os três nesta pasta. Os arquivos de "disp" e "ao" não são
+usados — pode descartar.
+
+Cada mapa é opcional e entra sozinho:
+
+  madeira-cor.jpg          substitui a cor da madeira
+  madeira-normal.jpg       dá relevo real ao veio  <- é o que mais muda
+  madeira-rugosidade.jpg   define onde a madeira brilha e onde é fosca
+
+SÓ O NORMAL JÁ VALE A PENA
+--------------------------
+Se você quiser manter a cor da madeira da peça real (extraída da foto
+da loja) e só ganhar o relevo, baixe apenas o mapa de normais e deixe
+madeira-cor.jpg de fora. Fica o melhor dos dois: a madeira dela, com o
+relevo de um material profissional.
+
+QUAL MATERIAL ESCOLHER
+----------------------
+Procure por "wood planks", "worn planks" ou "rough wood" e prefira um
+com veio marcado e tábuas largas — combina com madeira de demolição.
+Evite os de piso muito envernizado e os de madeira escura.
