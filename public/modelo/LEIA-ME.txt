@@ -1,0 +1,36 @@
+MODELO 3D DA MESA
+=================
+
+Coloque aqui um arquivo chamado exatamente:
+
+  mesa.glb
+
+Assim que ele existir, o site usa esse modelo no lugar da mesa
+construída por código — sem precisar mexer em nada.
+
+O modelo é redimensionado sozinho para 220 cm de comprimento e apoiado
+no chão, então não precisa se preocupar com a escala do arquivo.
+
+ONDE CONSEGUIR, DE GRAÇA
+------------------------
+
+1. ESCANEANDO A MESA REAL (melhor resultado)
+   Apps gratuitos de celular que geram .glb:
+     - Scaniverse  (grátis, exporta sem assinatura)
+     - Polycam     (plano grátis)
+     - RealityScan (Epic Games, grátis)
+   Ande devagar em volta da mesa filmando por 1 a 2 minutos, em luz
+   uniforme. O app processa e exporta o modelo da peça de verdade.
+
+2. BANCOS DE MODELOS GRATUITOS
+     - Sketchfab   (filtre por "Downloadable" e licença CC)
+     - Poly Haven  (CC0, uso livre inclusive comercial)
+     - Quaternius  (CC0)
+   Procure por "rustic dining table" ou "farmhouse table".
+   Baixe no formato GLB. Confira a licença antes de usar num site
+   comercial: prefira CC0.
+
+FORMATO
+-------
+Só .glb (o .gltf com arquivos separados não serve aqui).
+Deixe abaixo de 15 MB — modelos maiores travam o site no celular.

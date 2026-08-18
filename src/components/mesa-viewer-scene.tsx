@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Suspense,
   useCallback,
   useEffect,
   useMemo,
@@ -14,6 +15,7 @@ import {
   Html,
   OrbitControls,
   RoundedBox,
+  useGLTF,
 } from "@react-three/drei";
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import * as THREE from "three";
@@ -67,6 +69,9 @@ const EXPLODED_LOOK_AT = 0.2;
 const MIN_FACTOR = 0.55;
 const MAX_FACTOR = 1.5;
 const FALLBACK_DIST = 3.8;
+
+/** modelo 3D profissional, se houver um publicado */
+const MODELO_GLB = "/modelo/mesa.glb";
 
 /** fotos usadas como ambiente da cena, na ordem de preferência */
 const AMBIENTE = [
@@ -483,6 +488,65 @@ function Mesa({
   );
 }
 
+/**
+ * Modelo 3D pronto (.glb), quando existir um em /public/modelo/mesa.glb.
+ *
+ * Serve para trocar a mesa construída com primitivas por um modelo
+ * profissional — comprado, baixado de banco gratuito ou gerado escaneando a
+ * peça real com o celular. O modelo é centrado e redimensionado para os
+ * mesmos 220 cm de comprimento, então o enquadramento e os controles
+ * continuam valendo sem ajuste.
+ */
+function MesaGlb({ url }: { url: string }) {
+  const { scene } = useGLTF(url);
+
+  const modelo = useMemo(() => {
+    const raiz = scene.clone(true);
+
+    raiz.traverse((obj) => {
+      const malha = obj as THREE.Mesh;
+      if (!malha.isMesh) return;
+      malha.castShadow = true;
+      malha.receiveShadow = true;
+    });
+
+    // encaixa o modelo nas medidas reais, seja qual for a escala do arquivo
+    const caixa = new THREE.Box3().setFromObject(raiz);
+    const tamanho = caixa.getSize(new THREE.Vector3());
+    const maiorLado = Math.max(tamanho.x, tamanho.z) || 1;
+    const escala = TOP_W / maiorLado;
+    raiz.scale.setScalar(escala);
+
+    // apoia no chão e centra na origem
+    const caixaEscalada = new THREE.Box3().setFromObject(raiz);
+    const centro = caixaEscalada.getCenter(new THREE.Vector3());
+    raiz.position.x -= centro.x;
+    raiz.position.z -= centro.z;
+    raiz.position.y -= caixaEscalada.min.y;
+
+    return raiz;
+  }, [scene]);
+
+  return <primitive object={modelo} position={[0, GROUP_Y, 0]} />;
+}
+
+/** descobre se existe um .glb publicado, sem quebrar a cena se não existir */
+function useModeloPronto(url: string) {
+  const [existe, setExiste] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    let vivo = true;
+    fetch(url, { method: "HEAD" })
+      .then((r) => vivo && setExiste(r.ok))
+      .catch(() => vivo && setExiste(false));
+    return () => {
+      vivo = false;
+    };
+  }, [url]);
+
+  return existe;
+}
+
 /* -------------------------------------------------------------------------- */
 /*  Hotspots                                                                   */
 /* -------------------------------------------------------------------------- */
@@ -827,6 +891,7 @@ export default function MesaViewerScene({
   const [active, setActive] = useState<string | null>(null);
   const [homeDist, setHomeDist] = useState(FALLBACK_DIST);
   const [exploded, setExploded] = useState(false);
+  const modeloPronto = useModeloPronto(MODELO_GLB);
 
   const maps = useWoodMaps([11, 23, 37, 53]);
 
@@ -885,9 +950,18 @@ export default function MesaViewerScene({
         aria-label="Modelo 3D interativo da mesa de jantar rústica"
       >
         <Lights />
-        <Mesa maps={maps} exploded={exploded} instant={reducedMotion} />
+        {modeloPronto ? (
+          <Suspense fallback={null}>
+            <MesaGlb url={MODELO_GLB} />
+          </Suspense>
+        ) : (
+          <Mesa maps={maps} exploded={exploded} instant={reducedMotion} />
+        )}
+
         {/* com a mesa desmontada quem explica são as etiquetas das peças */}
-        {!exploded && <Hotspots active={active} onSelect={setActive} />}
+        {!exploded && !modeloPronto && (
+          <Hotspots active={active} onSelect={setActive} />
+        )}
 
         <Chao />
 
@@ -946,17 +1020,21 @@ export default function MesaViewerScene({
           >
             {autoRotate ? "Pausar" : "Girar"}
           </button>
-          <button
-            type="button"
-            className={`${btn} ${exploded ? "border-dourado/70 text-dourado" : ""}`}
-            aria-pressed={exploded}
-            onClick={() => {
-              setExploded((v) => !v);
-              setActive(null);
-            }}
-          >
-            {exploded ? "Montar" : "Desmontar"}
-          </button>
+          {!modeloPronto && (
+            <button
+              type="button"
+              className={`${btn} ${
+                exploded ? "border-dourado/70 text-dourado" : ""
+              }`}
+              aria-pressed={exploded}
+              onClick={() => {
+                setExploded((v) => !v);
+                setActive(null);
+              }}
+            >
+              {exploded ? "Montar" : "Desmontar"}
+            </button>
+          )}
           <button
             type="button"
             className={btn}
