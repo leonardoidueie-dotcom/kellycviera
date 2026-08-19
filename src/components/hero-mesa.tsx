@@ -31,9 +31,12 @@ export default function HeroMesa() {
       id="mesa-3d"
       className="relative overflow-hidden pt-20"
     >
+      {/* foto nítida no repouso; ao girar a mesa, o ambiente sai de foco */}
       <PhotoBackdrop
-        blur={interagindo ? 20 : 10}
-        escurecer={interagindo ? 0.86 : 0.55}
+        blur={interagindo ? 16 : 0}
+        escurecer={interagindo ? 0.84 : 0.42}
+        posicao="center 28%"
+        vinheta={interagindo}
       />
 
       <div className="relative mx-auto max-w-6xl px-6 pt-10 md:pt-14">

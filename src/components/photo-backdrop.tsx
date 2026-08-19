@@ -18,12 +18,17 @@ export default function PhotoBackdrop({
   ],
   blur = 14,
   escurecer = 0.7,
+  posicao = "center",
+  vinheta = true,
 }: {
   fontes?: string[];
-  /** desfoque em px */
+  /** desfoque em px — 0 deixa a foto nítida */
   blur?: number;
   /** 0 = foto crua, 1 = preto total */
   escurecer?: number;
+  /** enquadramento da foto, como em background-position */
+  posicao?: string;
+  vinheta?: boolean;
 }) {
   const [src, setSrc] = useState<string | null>(null);
 
@@ -50,11 +55,13 @@ export default function PhotoBackdrop({
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 z-0">
       <div
-        className="absolute inset-0 bg-cover bg-center"
+        className="absolute inset-0 bg-cover"
         style={{
           backgroundImage: `url(${src})`,
+          backgroundPosition: posicao,
           filter: `blur(${blur}px) saturate(1.05)`,
-          transform: "scale(1.1)", // esconde a borda que o blur deixa
+          // só amplia quando há desfoque, para esconder a borda que ele deixa
+          transform: blur > 0 ? "scale(1.1)" : "scale(1.02)",
           transition: "filter 700ms ease, transform 700ms ease",
         }}
       />
@@ -72,7 +79,12 @@ export default function PhotoBackdrop({
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_45%_at_50%_18%,rgba(201,162,39,0.16),transparent_70%)]" />
 
       {/* vinheta, para a peça ficar no centro da atenção */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_38%,rgba(23,16,8,0.8)_100%)]" />
+      {vinheta && (
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_38%,rgba(23,16,8,0.8)_100%)]" />
+      )}
+
+      {/* véu à esquerda: segura a leitura do título sobre a foto nítida */}
+      <div className="absolute inset-0 bg-gradient-to-r from-grafite/85 via-grafite/25 to-transparent md:w-3/5" />
 
       {/* emenda com a seção seguinte */}
       <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-grafite" />
