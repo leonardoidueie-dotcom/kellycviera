@@ -62,33 +62,46 @@ export default function MesaSpin360({
   const containerRef = useRef<HTMLDivElement>(null);
 
   /* ---------------------- pré-carregamento das fotos ---------------------- */
+  // primeiro só a foto 1: se ela não existir, não vale pedir as outras 23 e
+  // encher o carregamento de erros a cada visita.
   useEffect(() => {
-    let cancelled = false;
-    let done = 0;
+    let cancelado = false;
+    const imagens: HTMLImageElement[] = [];
+    let prontas = 0;
 
-    const images = paths.map((src, i) => {
-      const img = new Image();
-      img.src = src;
-      img.onload = () => {
-        if (cancelled) return;
-        done += 1;
-        setLoaded(done);
-        if (done === paths.length) setReady(true);
-      };
-      img.onerror = () => {
-        if (cancelled) return;
-        // sem a primeira foto não há giro nenhum: quem chamou decide o fallback
-        if (i === 0) {
-          setMissing(true);
-          onMissing?.();
-        }
-      };
-      return img;
-    });
+    const carregarResto = () => {
+      paths.slice(1).forEach((src) => {
+        const img = new Image();
+        img.src = src;
+        img.onload = img.onerror = () => {
+          if (cancelado) return;
+          prontas += 1;
+          setLoaded(prontas);
+          if (prontas === paths.length) setReady(true);
+        };
+        imagens.push(img);
+      });
+    };
+
+    const primeira = new Image();
+    primeira.src = paths[0];
+    primeira.onload = () => {
+      if (cancelado) return;
+      prontas = 1;
+      setLoaded(1);
+      if (paths.length === 1) setReady(true);
+      else carregarResto();
+    };
+    primeira.onerror = () => {
+      if (cancelado) return;
+      setMissing(true);
+      onMissing?.();
+    };
+    imagens.push(primeira);
 
     return () => {
-      cancelled = true;
-      images.forEach((img) => {
+      cancelado = true;
+      imagens.forEach((img) => {
         img.onload = null;
         img.onerror = null;
       });
