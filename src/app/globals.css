@@ -5,6 +5,8 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    /* o cabeçalho é fixo: as âncoras param abaixo dele */
+    scroll-padding-top: 5rem;
   }
 
   body {

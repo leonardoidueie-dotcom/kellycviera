@@ -12,12 +12,35 @@ import Logo from "./logo";
 export default function SiteHeader() {
   const [rolou, setRolou] = useState(false);
   const [aberto, setAberto] = useState(false);
+  const [ativo, setAtivo] = useState<string>("");
 
   useEffect(() => {
     const aoRolar = () => setRolou(window.scrollY > 40);
     aoRolar();
     window.addEventListener("scroll", aoRolar, { passive: true });
     return () => window.removeEventListener("scroll", aoRolar);
+  }, []);
+
+  // marca no menu a seção que está na tela
+  useEffect(() => {
+    const alvos = menu
+      .map((item) => document.querySelector(item.href))
+      .filter((el): el is Element => Boolean(el));
+
+    if (!alvos.length) return;
+
+    const observer = new IntersectionObserver(
+      (entradas) => {
+        const visivel = entradas
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visivel) setAtivo(`#${visivel.target.id}`);
+      },
+      { rootMargin: "-45% 0px -45% 0px", threshold: [0, 0.25, 0.5] },
+    );
+
+    alvos.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -41,9 +64,17 @@ export default function SiteHeader() {
             <a
               key={item.href}
               href={item.href}
-              className="text-[11px] uppercase tracking-[0.2em] text-areia/60 transition hover:text-dourado"
+              className={`relative text-[11px] uppercase tracking-[0.2em] transition hover:text-dourado ${
+                ativo === item.href ? "text-dourado" : "text-areia/60"
+              }`}
             >
               {item.label}
+              <span
+                aria-hidden
+                className={`absolute -bottom-1.5 left-0 h-px bg-dourado transition-all duration-500 ${
+                  ativo === item.href ? "w-full" : "w-0"
+                }`}
+              />
             </a>
           ))}
         </nav>
