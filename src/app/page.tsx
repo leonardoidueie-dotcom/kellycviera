@@ -1,5 +1,6 @@
 import Catalogo from "@/components/catalogo";
-import HeroMesa from "@/components/hero-mesa";
+import HeroApresentacao from "@/components/hero-apresentacao";
+import SecaoMesa from "@/components/secao-mesa";
 import Orcamento from "@/components/orcamento";
 import PhotoBackdrop from "@/components/photo-backdrop";
 import Reveal from "@/components/reveal";
@@ -36,8 +37,8 @@ export default function Home() {
       <SiteHeader />
 
       <main id="topo" className="bg-grafite">
-        {/* ---------------------------- 1. Topo ---------------------------- */}
-        <HeroMesa />
+        {/* ------------------- 1. Topo: quem faz, falando ------------------- */}
+        <HeroApresentacao />
 
         {/* ---------------------- 2. Faixa de assinatura ---------------------- */}
         <div className="border-y border-grafite-borda bg-grafite-claro/60">
@@ -94,10 +95,13 @@ export default function Home() {
           </div>
         </section>
 
-        {/* --------------------------- 4. Peças --------------------------- */}
+        {/* ---------------------- 4. A mesa por dentro ---------------------- */}
+        <SecaoMesa />
+
+        {/* --------------------------- 5. Peças --------------------------- */}
         <Catalogo />
 
-        {/* ------------------------ 5. Quem somos ------------------------ */}
+        {/* ------------------------ 6. Quem somos ------------------------ */}
         <section id="quem-somos" className="relative overflow-hidden">
           <PhotoBackdrop
             fontes={["/fotos/loja.jpg", "/fotos/ambiente-cozinha.png"]}
@@ -149,7 +153,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* -------------------------- 6. A loja -------------------------- */}
+        {/* -------------------------- 7. A loja -------------------------- */}
         <section className="relative overflow-hidden border-t border-grafite-borda">
           <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-6 py-20 md:grid-cols-2 md:py-28">
             <Reveal>
@@ -189,7 +193,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ------------------------ 7. Orçamento ------------------------ */}
+        {/* ------------------------ 8. Orçamento ------------------------ */}
         <Orcamento />
       </main>
 
