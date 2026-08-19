@@ -10,20 +10,23 @@ export const loja = {
   nome: "Tok Rústico",
   chamada: "Móveis em madeira maciça e de demolição",
 
-  /**
-   * ⚠️ PREENCHER: número do WhatsApp com código do país e DDD, só dígitos.
-   * Exemplo para um celular de São Paulo: "5511987654321"
-   */
-  whatsapp: "5500000000000",
+  /** WhatsApp com código do país e DDD, só dígitos */
+  whatsapp: "5535998428673",
+  /** o mesmo número, escrito como as pessoas leem */
+  telefone: "+55 35 99842-8673",
 
-  /** ⚠️ PREENCHER: usuário do Instagram, sem o @ */
+  /** usuário do Instagram, sem o @ */
   instagram: "tokrustico",
 
-  /** ⚠️ PREENCHER */
-  endereco: "Rua Example, 000 — Bairro, Cidade/UF",
-  horario: "Segunda a sexta, 9h às 18h · Sábado, 9h às 13h",
+  /**
+   * ⚠️ PREENCHER com o endereço da loja.
+   * Enquanto estiver vazio, o site simplesmente não mostra endereço —
+   * melhor a ausência do que um endereço errado.
+   */
+  endereco: "",
+  horario: "Aberto das 7h às 17h",
 
-  /** ⚠️ PREENCHER (deixe vazio para esconder do rodapé) */
+  /** opcional: deixe vazio para esconder do rodapé */
   email: "",
 };
 

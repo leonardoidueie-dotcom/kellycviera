@@ -52,7 +52,7 @@ export default function SiteFooter() {
                 rel="noopener noreferrer"
                 className="transition hover:text-dourado"
               >
-                WhatsApp
+                {loja.telefone}
               </a>
             </li>
             <li>
@@ -76,8 +76,12 @@ export default function SiteFooter() {
               </li>
             )}
             <li className="pt-2 leading-relaxed text-areia/45">
-              {loja.endereco}
-              <br />
+              {loja.endereco && (
+                <>
+                  {loja.endereco}
+                  <br />
+                </>
+              )}
               {loja.horario}
             </li>
           </ul>

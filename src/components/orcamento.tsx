@@ -63,11 +63,20 @@ export default function Orcamento() {
               </dt>
               <dd className="mt-1 text-areia/70">{loja.horario}</dd>
             </div>
+            {loja.endereco && (
+              <div>
+                <dt className="text-[10px] uppercase tracking-[0.25em] text-areia/35">
+                  Loja
+                </dt>
+                <dd className="mt-1 text-areia/70">{loja.endereco}</dd>
+              </div>
+            )}
+
             <div>
               <dt className="text-[10px] uppercase tracking-[0.25em] text-areia/35">
-                Loja
+                WhatsApp
               </dt>
-              <dd className="mt-1 text-areia/70">{loja.endereco}</dd>
+              <dd className="mt-1 text-areia/70">{loja.telefone}</dd>
             </div>
           </dl>
         </div>

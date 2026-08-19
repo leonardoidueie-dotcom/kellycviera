@@ -176,11 +176,20 @@ export default function Home() {
               </p>
 
               <dl className="mt-8 space-y-4 border-l border-dourado/25 pl-5 text-sm">
+                {loja.endereco && (
+                  <div>
+                    <dt className="text-[10px] uppercase tracking-[0.25em] text-areia/35">
+                      Endereço
+                    </dt>
+                    <dd className="mt-1 text-areia/75">{loja.endereco}</dd>
+                  </div>
+                )}
+
                 <div>
                   <dt className="text-[10px] uppercase tracking-[0.25em] text-areia/35">
-                    Endereço
+                    WhatsApp
                   </dt>
-                  <dd className="mt-1 text-areia/75">{loja.endereco}</dd>
+                  <dd className="mt-1 text-areia/75">{loja.telefone}</dd>
                 </div>
                 <div>
                   <dt className="text-[10px] uppercase tracking-[0.25em] text-areia/35">
