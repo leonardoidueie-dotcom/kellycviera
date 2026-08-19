@@ -257,7 +257,7 @@ function WoodMaterial({
       // com mapa de normais o relevo vem dele; o bump sairia dobrado
       normalMap={cloned.normalMap ?? undefined}
       normalScale={
-        cloned.normalMap ? new THREE.Vector2(0.85, 0.85) : undefined
+        cloned.normalMap ? new THREE.Vector2(1.4, 1.4) : undefined
       }
       bumpMap={cloned.normalMap ? undefined : cloned.bumpMap}
       bumpScale={foto ? 0.02 : 0.012}
@@ -901,7 +901,7 @@ function AmbienteDaLoja({ fontes }: { fontes: string[] }) {
           tex.mapping = THREE.EquirectangularReflectionMapping;
           tex.colorSpace = THREE.SRGBColorSpace;
           scene.environment = tex;
-          scene.environmentIntensity = 1.15;
+          scene.environmentIntensity = 0.9;
         },
         undefined,
         () => tentar(i + 1),
@@ -954,10 +954,10 @@ function Chao() {
 function Lights() {
   return (
     <>
-      <ambientLight intensity={0.35} color="#FFE6C4" />
+      <ambientLight intensity={0.28} color="#FFE6C4" />
       <directionalLight
         position={[3.2, 4.5, 2.6]}
-        intensity={1.35}
+        intensity={1.1}
         color="#FFEAC8"
         castShadow
         shadow-mapSize={[2048, 2048]}

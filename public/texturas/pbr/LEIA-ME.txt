@@ -1,34 +1,27 @@
-TEXTURA PBR DA MADEIRA  (opcional, deixa o 3D bem mais real)
-============================================================
+TEXTURA PBR DA MADEIRA
+======================
 
-Baixe um material de madeira em https://polyhaven.com/textures
-(licença CC0 — uso comercial liberado, sem atribuição obrigatória).
+O que está sendo usado hoje:
 
-Na página do material, escolha resolução 2K e formato JPG.
-O arquivo baixado é um ZIP. Descompacte e renomeie assim:
+  madeira-normal.jpg   -> relevo do veio. ESTE é o que muda o resultado.
+                          Veio do "Rosewood Veneer" do Poly Haven (CC0),
+                          convertido de EXR para JPG.
 
-  ..._diff_2k.jpg      ->  madeira-cor.jpg
-  ..._nor_gl_2k.jpg    ->  madeira-normal.jpg      (o "gl", não o "dx")
-  ..._rough_2k.jpg     ->  madeira-rugosidade.jpg
+O que está guardado mas NÃO é usado:
 
-Coloque os três nesta pasta. Os arquivos de "disp" e "ao" não são
-usados — pode descartar.
+  cor-rosewood.jpg               cor do jacarandá — vermelho escuro, é
+                                 outra madeira. A cor do tampo continua
+                                 saindo da foto da peça real da loja,
+                                 em /public/texturas/madeira-tampo.jpg
 
-Cada mapa é opcional e entra sozinho:
+  rugosidade-veneer-nao-usada.jpg  o veneer é envernizado e deixava a
+                                 mesa com brilho plástico. O acabamento
+                                 da loja é óleo fosco.
 
-  madeira-cor.jpg          substitui a cor da madeira
-  madeira-normal.jpg       dá relevo real ao veio  <- é o que mais muda
-  madeira-rugosidade.jpg   define onde a madeira brilha e onde é fosca
+Para ativar a cor do jacarandá, renomeie cor-rosewood.jpg para
+madeira-cor.jpg. Para voltar atrás, renomeie de volta.
 
-SÓ O NORMAL JÁ VALE A PENA
---------------------------
-Se você quiser manter a cor da madeira da peça real (extraída da foto
-da loja) e só ganhar o relevo, baixe apenas o mapa de normais e deixe
-madeira-cor.jpg de fora. Fica o melhor dos dois: a madeira dela, com o
-relevo de um material profissional.
-
-QUAL MATERIAL ESCOLHER
-----------------------
-Procure por "wood planks", "worn planks" ou "rough wood" e prefira um
-com veio marcado e tábuas largas — combina com madeira de demolição.
-Evite os de piso muito envernizado e os de madeira escura.
+FORMATO
+-------
+Só JPG ou PNG. Navegador não abre .exr — se baixar em EXR, é preciso
+converter antes.
