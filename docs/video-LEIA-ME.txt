@@ -1,0 +1,27 @@
+VÍDEOS DO SITE
+==============
+
+mesa-360.mp4     -> vídeo dando a volta na mesa. Vira o giro interativo:
+                    o visitante arrasta e a mesa gira, quadro a quadro.
+                    Quando este arquivo existe, ele substitui o 3D no topo.
+
+apresentacao.mp4 -> vídeo de alguém falando sobre a loja. Aparece numa
+                    seção própria, deitado (16/9).
+
+tok-rustico.mp4  -> vídeo vertical da loja, já publicado.
+
+O QUE FAZ UM BOM VÍDEO DE GIRO
+------------------------------
+1. Volta completa em torno da mesa (ou a mesa girando), sem cortes.
+2. Movimento lento e constante — 10 a 20 segundos para a volta inteira.
+3. Altura da câmera fixa, sempre à mesma distância.
+4. Sem zoom no meio do caminho.
+5. Sem ninguém passando na frente.
+
+Se o vídeo não der a volta completa, o giro ainda funciona: o arraste
+percorre o trecho filmado, de ida e de volta.
+
+TAMANHO
+-------
+Deixe cada arquivo abaixo de 25 MB. Vídeos maiores atrasam o site e
+incomodam o Git. Se precisar reduzir, exporte em 720p.

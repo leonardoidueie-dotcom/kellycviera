@@ -1,0 +1,27 @@
+TEXTURA PBR DA MADEIRA
+======================
+
+O que está sendo usado hoje:
+
+  madeira-normal.jpg   -> relevo do veio. ESTE é o que muda o resultado.
+                          Veio do "Rosewood Veneer" do Poly Haven (CC0),
+                          convertido de EXR para JPG.
+
+O que está guardado mas NÃO é usado:
+
+  cor-rosewood.jpg               cor do jacarandá — vermelho escuro, é
+                                 outra madeira. A cor do tampo continua
+                                 saindo da foto da peça real da loja,
+                                 em /public/texturas/madeira-tampo.jpg
+
+  rugosidade-veneer-nao-usada.jpg  o veneer é envernizado e deixava a
+                                 mesa com brilho plástico. O acabamento
+                                 da loja é óleo fosco.
+
+Para ativar a cor do jacarandá, renomeie cor-rosewood.jpg para
+madeira-cor.jpg. Para voltar atrás, renomeie de volta.
+
+FORMATO
+-------
+Só JPG ou PNG. Navegador não abre .exr — se baixar em EXR, é preciso
+converter antes.

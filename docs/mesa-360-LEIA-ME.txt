@@ -1,0 +1,30 @@
+FOTOS DO GIRO 360 DA MESA
+=========================
+
+Coloque aqui as fotos da mesa girando, nomeadas exatamente assim:
+
+  frame-01.jpg
+  frame-02.jpg
+  frame-03.jpg
+  ...
+  frame-24.jpg
+
+Regras que fazem o giro ficar bom:
+
+1. A MESA GIRA, A CÂMERA NÃO. Deixe o celular parado num tripé (ou
+   apoiado em algo firme) e gire a mesa um pouco a cada foto.
+   Se preferir andar em volta, marque o chão com fita para manter
+   sempre a mesma distância e a mesma altura.
+
+2. 24 fotos = 15 graus entre uma e outra. Pode ser 36 fotos (10 graus)
+   para um giro mais macio — nesse caso avise para eu ajustar o número.
+
+3. Mesma luz em todas. Nada de flash em uma e não em outra.
+
+4. Fundo limpo e igual em todas: uma parede lisa, ou o mesmo canto da
+   loja. Fundo bagunçado atrapalha mais que iluminação ruim.
+
+5. Todas na mesma orientação (deitada/paisagem) e no mesmo tamanho.
+
+Depois de copiar as fotos, recarregue o site: o giro fotográfico entra
+no lugar do 3D automaticamente.
