@@ -1,0 +1,11 @@
+Jogue aqui as fotos originais (JPG/PNG, direto do fotógrafo, sem compressão).
+
+Depois rode na raiz do projeto:
+
+    npm run otimizar-imagens
+
+Os arquivos otimizados (.webp, no tamanho certo) vão para public/images/.
+Se o nome do arquivo for igual ao de um placeholder — por exemplo hero.jpg,
+case-01.jpg, servico-camisetas.jpg — ele já entra no lugar certo do site.
+
+Esta pasta NÃO vai para o site publicado: é só o seu material bruto.
