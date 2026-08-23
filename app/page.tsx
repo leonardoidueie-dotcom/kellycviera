@@ -3,6 +3,7 @@ import Positioning from '@/components/sections/Positioning';
 import Services from '@/components/sections/Services';
 import ServiceDetails from '@/components/sections/ServiceDetails';
 import Counter from '@/components/sections/Counter';
+import Showreel from '@/components/sections/Showreel';
 import Cases from '@/components/sections/Cases';
 import Clients from '@/components/sections/Clients';
 import ContactCta from '@/components/sections/ContactCta';
@@ -13,8 +14,8 @@ import EasterEgg from '@/components/sections/EasterEgg';
 /**
  * ORDEM DA PÁGINA (one-page)
  * Hero → Posicionamento → Serviços → Detalhe dos serviços → Contador →
- * Cases (scroll horizontal) → Clientes → CTA de contato → Formulário →
- * Rodapé → Easter egg
+ * Showreel (vídeo) → Cases (scroll horizontal) → Clientes → CTA de contato →
+ * Formulário → Rodapé → Easter egg
  * Para reordenar seções, basta mexer na ordem abaixo.
  */
 export default function HomePage() {
@@ -25,6 +26,7 @@ export default function HomePage() {
       <Services />
       <ServiceDetails />
       <Counter />
+      <Showreel />
       <Cases />
       <Clients />
       <ContactCta />

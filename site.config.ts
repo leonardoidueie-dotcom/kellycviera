@@ -21,6 +21,41 @@ export const site = {
     positioning:
       'Não fazemos moda para vitrine. Fazemos peça para andar, suar, sentar no meio-fio e voltar melhor no dia seguinte.',
     foundedYear: 2019, // TROQUE
+    /**
+     * LOGO DA MARCA.
+     * null  → usa o logo em SVG desenhado no código (components/ui/Logo.tsx).
+     * '/images/logo.svg' → usa o arquivo que você colocar em /public/images.
+     * Prefira SVG; se for PNG, use fundo transparente e ≥ 400px de largura.
+     */
+    logoSrc: null as string | null,
+  },
+
+  /* ----------------------------------------------------------------- VÍDEO --- */
+  /**
+   * Os dois vídeos do site. Coloque os arquivos em /public/video.
+   * SEMPRE exporte em MP4 (H.264 + AAC) — é o único formato que toca no
+   * Safari/iPhone. O WebM é opcional e serve para economizar banda no Chrome.
+   * O `poster` é a imagem que aparece antes do vídeo carregar (conta como LCP).
+   */
+  media: {
+    hero: {
+      enabled: true, // false = hero só com foto
+      // Deixe vazio até ter o arquivo. Ao exportar, coloque '/video/hero.mp4'
+      // — o MP4 é obrigatório para o vídeo tocar no iPhone.
+      mp4: '',
+      webm: '/video/hero-placeholder.webm', // TROQUE pelo seu
+      poster: '/images/hero.webp',
+    },
+    showreel: {
+      enabled: true, // false = a seção de vídeo some da página
+      mp4: '', // TROQUE por '/video/showreel.mp4' quando tiver o arquivo
+      webm: '/video/hero-placeholder.webm', // TROQUE
+      poster: '/images/case-01.webp',
+      kicker: 'Bastidor',
+      title: 'Da mesa de corte até o meio-fio',
+      caption: 'Corte, silk, prova e drop — em 40 segundos.',
+      alt: 'Vídeo mostrando a produção das peças e o drop na rua',
+    },
   },
 
   /* ------------------------------------------------------------ LOCALIDADE --- */

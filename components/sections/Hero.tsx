@@ -6,6 +6,7 @@ import { gsap, ScrollTrigger } from '@/lib/gsap';
 import { useReducedMotion } from '@/lib/hooks';
 import { useLenis } from '@/components/providers/SmoothScroll';
 import WordReveal from '@/components/ui/WordReveal';
+import BackgroundVideo from '@/components/ui/BackgroundVideo';
 import { site } from '@/site.config';
 
 /**
@@ -57,10 +58,10 @@ export default function Hero() {
       className="relative flex min-h-[100svh] flex-col justify-end overflow-hidden pb-14 pt-[calc(var(--header-h)+2rem)] grain"
       aria-label="Apresentação"
     >
-      {/* Fundo com parallax */}
+      {/* Fundo com parallax: a foto é o LCP e o vídeo entra por cima quando toca */}
       <div ref={bgRef} className="absolute inset-0 -z-10">
         <Image
-          src="/images/hero.webp"
+          src={site.media.hero.poster}
           alt="Look completo da marca fotografado na rua: camiseta oversized e calça baggy"
           fill
           priority
@@ -68,6 +69,20 @@ export default function Hero() {
           sizes="100vw"
           className="object-cover object-center opacity-45"
         />
+
+        {site.media.hero.enabled && (
+          <div className="absolute inset-0 opacity-45">
+            <BackgroundVideo
+              mp4={site.media.hero.mp4}
+              webm={site.media.hero.webm}
+              poster={site.media.hero.poster}
+              label="Vídeo de fundo com peças da marca na rua"
+              playWhenVisible
+              fadeIn
+            />
+          </div>
+        )}
+
         <div className="absolute inset-0 bg-gradient-to-b from-ink via-ink/50 to-ink" />
       </div>
 

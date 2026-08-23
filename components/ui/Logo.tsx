@@ -2,13 +2,24 @@ import { site } from '@/site.config';
 import { cn } from '@/lib/utils';
 
 /**
- * LOGO — triângulo com a sigla da marca, desenhado em SVG (escala sem perder nitidez).
- * PARA TROCAR PELO ARQUIVO DA MARCA:
- * 1) coloque o SVG em /public/images/logo.svg
- * 2) troque o conteúdo deste componente por:
- *    <img src="/images/logo.svg" alt="ESTILO DE RUA" className={className} />
+ * LOGO
+ * PARA USAR O ARQUIVO DA MARCA:
+ * 1) coloque o arquivo em /public/images/logo.svg (ou .png transparente)
+ * 2) em site.config.ts, mude `brand.logoSrc` para '/images/logo.svg'
+ * Enquanto `logoSrc` for null, vale o desenho em SVG abaixo.
  */
 export default function Logo({ className }: { className?: string }) {
+  if (site.brand.logoSrc) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={site.brand.logoSrc}
+        alt={`${site.brand.name} — logo`}
+        className={cn('h-9 w-auto', className)}
+      />
+    );
+  }
+
   return (
     <svg
       viewBox="0 0 64 56"

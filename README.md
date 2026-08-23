@@ -3,8 +3,12 @@
 Site one-page, animado, feito **do zero** em Next.js — sem WordPress, sem page builder,
 sem template comprado. Todo o conteúdo em português do Brasil.
 
-> **Nome, cidade, telefone, cores e fotos são placeholders.** Tudo isso se troca em
-> um único arquivo: [`site.config.ts`](./site.config.ts). Procure por `TROQUE`.
+> **Nome, cidade, telefone, cores, fotos e vídeo são placeholders.** Tudo isso se
+> troca em um único arquivo: [`site.config.ts`](./site.config.ts). Procure por `TROQUE`.
+
+> 👉 **Se você quer o passo a passo mastigado** — rodar na sua máquina, trocar logo,
+> fotos e vídeo, otimizar e publicar — leia o **[GUIA.md](./GUIA.md)**.
+> Este README é a referência técnica; o GUIA é o roteiro.
 
 ---
 
@@ -15,7 +19,8 @@ npm install          # instala as dependências
 npm run dev          # ambiente de desenvolvimento em http://localhost:3000
 npm run build        # build de produção
 npm run start        # sobe o build de produção
-npm run placeholders # regera as imagens de exemplo em /public/images
+npm run placeholders     # regera as imagens de exemplo em /public/images
+npm run otimizar-imagens # comprime as fotos de midia-original/ para public/images
 ```
 
 Requisitos: Node.js 18.18+ (testado no Node 22).
@@ -29,7 +34,7 @@ Requisitos: Node.js 18.18+ (testado no Node 22).
 | **Tailwind CSS** | estilo utilitário, com tokens da marca |
 | **GSAP + ScrollTrigger** | todas as animações de scroll |
 | **Lenis** | smooth scroll global (sincronizado com o ScrollTrigger) |
-| **sharp** | geração das imagens placeholder |
+| **sharp** | geração dos placeholders e o script de otimização de imagens |
 
 ## 3. Onde editar o quê
 
@@ -38,10 +43,11 @@ Requisitos: Node.js 18.18+ (testado no Node 22).
 
 | Bloco | O que controla |
 | --- | --- |
-| `brand` | nome, sigla, frase do hero, frase de posicionamento, ano de fundação |
+| `brand` | nome, sigla, **arquivo do logo**, frase do hero, posicionamento, ano |
 | `location` | cidade, UF, **fuso do relógio ao vivo**, endereço, coordenadas |
 | `contact` | telefone, link do WhatsApp (com mensagem pré-pronta), e-mail, Instagram |
 | `seo` | title, description, palavras-chave, imagem de Open Graph, domínio |
+| `media` | vídeo do hero e vídeo do showreel (MP4/WebM + poster) |
 | `menu` | itens do menu fullscreen + miniatura de cada um |
 | `services` | lista de serviços (título, resumo, texto longo, imagem, selos) |
 | `stats` | números do contador animado |
@@ -76,7 +82,38 @@ se mudar o fundo.
 de variável (`--font-display`, `--font-body`) devem continuar iguais.
 Os tamanhos gigantes (`text-mega`, `text-huge`, `text-big`) ficam em `tailwind.config.ts`.
 
-### 3.4 Imagens
+### 3.4 Logo
+
+Coloque o arquivo em `public/images/logo.svg` (SVG monocromático branco é o ideal)
+e aponte em `site.config.ts`:
+
+```ts
+logoSrc: '/images/logo.svg',   // null = usa o logo desenhado em components/ui/Logo.tsx
+```
+
+O favicon fica em `app/icon.svg` — é um SVG de texto, dá para editar as cores direto.
+
+### 3.5 Vídeo
+
+Bloco `media` do `site.config.ts`. Arquivos em `public/video/`.
+
+```ts
+media: {
+  hero:     { enabled: true, mp4: '/video/hero.mp4', webm: '', poster: '/images/hero.webp' },
+  showreel: { enabled: true, mp4: '/video/showreel.mp4', webm: '', poster: '...' },
+}
+```
+
+- **Exporte sempre em MP4 (H.264)** — é o único formato que toca no Safari/iPhone.
+  O WebM é opcional e serve só para economizar banda no Chrome.
+- Hoje o `mp4` está vazio e roda um WebM de exemplo (`hero-placeholder.webm`), só
+  para o efeito ficar visível. Troque antes de publicar.
+- Os vídeos tocam **mudos, em loop, só quando estão na tela**, e não tocam para quem
+  ativou "reduzir movimento". O poster (foto) carrega antes, então o LCP não depende
+  do vídeo. Comandos de compressão prontos estão no [GUIA.md](./GUIA.md), Parte 2, Passo 5.
+- `enabled: false` desliga o vídeo (o hero fica só com a foto; a seção de showreel some).
+
+### 3.6 Imagens
 Todas as imagens vivem em `public/images/` e são **placeholders gerados por script**.
 
 Para colocar as fotos reais, há dois caminhos:
@@ -103,7 +140,20 @@ gera os tamanhos por breakpoint — só o hero é `priority` (para o LCP).
 Logos de clientes: em `clients`, troque `logo: null` por `logo: '/images/logo-cliente.svg'`.
 Enquanto for `null`, o nome aparece como wordmark de texto.
 
-### 3.5 Formulário — para receber as mensagens de verdade
+#### Jeito automático de otimizar as fotos
+
+Jogue as fotos originais em `midia-original/` **com o nome do arquivo que elas vão
+substituir** (`hero.jpg`, `case-01.jpg`…) e rode:
+
+```bash
+npm run otimizar-imagens
+```
+
+O script (`scripts/otimizar-imagens.mjs`) redimensiona, comprime e grava em
+`public/images/` como `.webp`, mostrando quanto cada arquivo emagreceu.
+A pasta `midia-original/` não vai para o site publicado.
+
+### 3.7 Formulário — para receber as mensagens de verdade
 **Arquivo:** `app/api/contact/route.ts`. Hoje ele valida e responde OK, mas só
 registra no log do servidor. Há um bloco marcado com `TROQUE ESTE BLOCO` mostrando
 onde plugar Resend/SendGrid, um webhook (Zapier, Make, n8n) ou um CRM.
@@ -122,6 +172,7 @@ Header fixo (logo + relógio ao vivo + Menu)
  └ Serviços (hover-image)   components/sections/Services.tsx
  └ Detalhe dos serviços     components/sections/ServiceDetails.tsx
  └ Contador animado         components/sections/Counter.tsx
+ └ Showreel (vídeo)         components/sections/Showreel.tsx
  └ Cases (scroll horizontal)components/sections/Cases.tsx + CaseModal.tsx
  └ Logos de clientes        components/sections/Clients.tsx
  └ CTA de contato           components/sections/ContactCta.tsx
@@ -159,6 +210,9 @@ Header fixo (logo + relógio ao vivo + Menu)
     estado de envio, mensagem de sucesso animada e checkbox de política obrigatório.
 11. **Easter egg** — `components/sections/EasterEgg.tsx`, depois do rodapé.
 
+Extra: **vídeo** — `components/ui/BackgroundVideo.tsx` (fundo do hero) e
+`components/sections/Showreel.tsx` (bloco de vídeo com som e pausa).
+
 ## 6. Acessibilidade
 
 - Skip link ("Pular para o conteúdo") como primeiro item focável.
@@ -178,7 +232,10 @@ Header fixo (logo + relógio ao vivo + Menu)
 - Fontes via `next/font` com `display: swap` (sem requisição bloqueante).
 - Animações só em `transform`/`opacity`, com `will-change` onde importa.
 - Nenhuma biblioteca de UI, carrossel ou ícones: o JS da home fica em torno de 170 kB.
-- Meta de LCP < 2,5s: mantenha o `hero.webp` **abaixo de ~300 kB** ao trocar pela foto real.
+- Vídeo com `preload="none"`, autoplay mudo e play/pause por `IntersectionObserver`:
+  só baixa e só toca quando está na tela.
+- Meta de LCP < 2,5s: mantenha o `hero.webp` **abaixo de ~300 kB** e o vídeo do hero
+  abaixo de ~3 MB ao trocar pelos arquivos reais.
 
 ## 8. SEO local
 
@@ -196,6 +253,8 @@ repositório e dar deploy, sem configuração). Checklist antes de publicar:
 
 - [ ] `site.config.ts` sem nenhum `TROQUE` pendente
 - [ ] fotos reais em `public/images` (inclusive `og.webp`)
+- [ ] logo da marca em `public/images/logo.svg` + `brand.logoSrc` apontando para ele
+- [ ] `hero.mp4` (H.264) exportado — o placeholder em WebM **não toca no iPhone**
 - [ ] `seo.siteUrl` com o domínio final
 - [ ] envio do formulário plugado em `app/api/contact/route.ts`
 - [ ] texto da política de privacidade revisado — hoje `/politica-de-privacidade`
